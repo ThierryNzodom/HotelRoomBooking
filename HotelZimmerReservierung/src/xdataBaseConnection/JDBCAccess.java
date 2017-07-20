@@ -20,10 +20,15 @@ public abstract class JDBCAccess {
 		
 	try{			
 		System.out.println("mySQL-Treiber wurden erfolgreich geladen");
+		System.out.println("------------------------------");
 		System.out.println("DriverName: " + Class.forName(dbDrivername));
-		dbConn = DriverManager.getConnection(dbURL,dbUserid,dbPassword);			
+		dbConn = DriverManager.getConnection(
+				dbURL,
+				dbUserid,
+				dbPassword);			
 		System.out.println("Datenbankverbindung erfolgreich hergestellt :)");
 		System.out.println("------------------------------");
+		System.out.println("You are Connected!");
 	
 	}catch(Exception e){
 		e.printStackTrace();
