@@ -14,7 +14,7 @@ public class MySQLAccess extends JDBCAccess {
 	}
 	
 	public static void main(String[] args) throws NoConnectionException {
-		System.out.println("Herstellung einer Datenbankverbindung...");
+		System.out.println("Herstellung einer Datenbankverbindung in Bearbeitung...");
 		new MySQLAccess().getConnection();
 	}
 

@@ -28,7 +28,7 @@ public abstract class JDBCAccess {
 				dbPassword);			
 		System.out.println("Datenbankverbindung erfolgreich hergestellt :)");
 		System.out.println("------------------------------");
-		System.out.println("You are Connected!");
+		System.out.println("Sie sind verbunden!");
 	
 	}catch(Exception e){
 		e.printStackTrace();
