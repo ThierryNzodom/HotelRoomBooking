@@ -2,6 +2,7 @@ package xdataBaseConnection;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.SQLException;
 
 public abstract class JDBCAccess {
 	Connection dbConn;
@@ -9,12 +10,24 @@ public abstract class JDBCAccess {
 	String dbURL;
 	String dbUserid;
 	String dbPassword;
+//	String dbSchema;
 	
-	JDBCAccess() throws NoConnectionException {
-		this.setParms();	
+	JDBCAccess() throws NoConnectionException, SQLException {
+		this.setParms();
+//		this.createConnection();
+//		this.setSchema();
 	}
 	
 	abstract void setParms();
+	
+//	public void setSchema() throws SQLException {
+//		String sql = "SET SCHEMA ?";
+//		System.out.println(sql);
+//		PreparedStatement prepStat = dbConn.prepareStatement(sql);
+//		prepStat.setString(1, dbSchema);
+//		prepStat.executeUpdate();
+//		System.out.println("Schema " + dbSchema + " erfolgreich gesetzt");
+//	}
 	
 	void createConnection() throws NoConnectionException{
 		

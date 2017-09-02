@@ -8,6 +8,6 @@ public class NoConnectionException extends Exception {
 	}
 	
 	public NoConnectionException(){
-		super("Datenbankverbindung nicht verfügbar-Nach möglichem Fehler suchen");
+		super("Datenbankverbindung nicht verfügbar - Nach möglichem Fehler suchen");
 	}
 }

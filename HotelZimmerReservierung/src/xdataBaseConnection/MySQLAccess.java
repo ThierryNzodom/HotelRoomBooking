@@ -1,5 +1,7 @@
 package xdataBaseConnection;
 
+import java.sql.SQLException;
+
 public class MySQLAccess extends JDBCAccess {
 
 	@Override
@@ -7,13 +9,14 @@ public class MySQLAccess extends JDBCAccess {
 		dbDrivername = "com.mysql.jdbc.Driver";		
 		dbURL        = "jdbc:mysql://localhost:3306/roombooking";
 		dbUserid 	 = "root";
-		dbPassword   = "";
+		dbPassword   = "aSUwx6Qa2IcPY3kk";
+//		dbSchema = "";
 	}
-	public MySQLAccess() throws NoConnectionException {
+	public MySQLAccess() throws NoConnectionException, SQLException {
 		super();
 	}
 	
-	public static void main(String[] args) throws NoConnectionException {
+	public static void main(String[] args) throws NoConnectionException, SQLException {
 		System.out.println("Herstellung einer Datenbankverbindung in Bearbeitung...");
 		new MySQLAccess().getConnection();
 	}
