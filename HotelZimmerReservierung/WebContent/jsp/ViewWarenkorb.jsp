@@ -17,13 +17,13 @@ dojo.ready(function(){
 </script>
 </head>
 <body>
-<jsp:useBean id="user" class="manage.JavaBean.UserBean" scope="session"/>
+<jsp:useBean id="ub" class="manage.JavaBean.UserBean" scope="session"/>
 <jsp:useBean id="msg" class="manage.JavaBean.MsgBean" scope="session"/>
 <%
-user = (UserBean) session.getAttribute("user");
-if(user == null){
-	user = new UserBean();
-	session.setAttribute("user", user);
+ub = (UserBean) session.getAttribute("ub");
+if(ub == null){
+	ub = new UserBean();
+	session.setAttribute("ub", ub);
 }
 msg = (MsgBean) session.getAttribute("msg");
 	if(msg == null){
@@ -36,10 +36,8 @@ msg = (MsgBean) session.getAttribute("msg");
 <h2><%= msg.getActionMsg() %></h2>
 
 <%
-out.print("Userid: " + user.getUserid() + "<br/>");
-out.print("Password: " + user.getPassword()+ "<br/>");
-out.print("Username: " + user.getUsername() + "<br/>");
-out.print("E-Mail: " + user.getEmail() + "<br/>");
+out.print("E-Mail: " + ub.getEmail() + "<br/>");
+out.print("Password: " + ub.getPassword()+ "<br/>");
 %>
 
 </body>

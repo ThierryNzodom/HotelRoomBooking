@@ -10,7 +10,7 @@ Connection dbConn;
 String host = "localhost";
 String database = "roombooking";
 String user = "root";
-String passwd = "";
+String passwd = "aSUwx6Qa2IcPY3kk";
 String dbDrivername = "com.mysql.jdbc.Driver";
 
  

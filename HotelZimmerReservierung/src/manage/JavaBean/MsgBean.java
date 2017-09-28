@@ -4,6 +4,7 @@ public class MsgBean {
 	
 	String infoMsg;
 	String actionMsg;
+	String timeErrorMsg;
 	
 	public MsgBean() {		
 		this.setGeneralWelcome();
@@ -15,28 +16,38 @@ public class MsgBean {
 	}
 	public void setLoginFailed(){
 		this.setInfoMsg("Deine Anmeldung hat leider nicht geklappt");
-		this.setActionMsg("Versuche es nochmal, Registrieren wenn noch nicht getan");
+		this.setActionMsg("Versuche es nochmal, Registrieren wenn noch nicht getan.");
 	}
 	public void setUseridLeer(){
 		this.setInfoMsg("Dein Nickname muss mindestens ein Zeichen lang sein");
 		this.setActionMsg("Wähle einen anständigen Nickname");
 	}	
 	public void setGeneralWelcome(){
-		this.setInfoMsg("Willkommen zur JSP Anwendung");
-		this.setActionMsg("Bitte registirern Sie sich oder loggen Sie sich ein");
+		this.setInfoMsg("Ihr WI_Master Hotel: Zimmer Reservierung!");
+		this.setActionMsg("Bitte registieren Sie sich oder loggen Sie sich ersmal ein");
+		this.setTimeErrorMsg("");
 	}
-	
+	public void setLoginFirst(){
+		this.setInfoMsg("Bitte Logen Sie sich zuerst!");
+		this.setActionMsg("Sonst können Sie nicht auf diese Tabreiter");
+	}
 	public void setSystemfehler(){
 		this.setInfoMsg("Es ist ein Fehler aufgetreten");
 		this.setActionMsg("Sage Deinem Admin Bescheid");
 	}
-	public void setAlreadyExists(String userid){
-		this.setInfoMsg("Der Nickname " + userid + " ist schon vergeben");
+	public void setAlreadyExists(String email){
+		this.setInfoMsg("Die Email " + email + " ist schon vergeben");
 		this.setActionMsg("Wähle einen anderen Nickname aus");
 	}
-	public void setRegSuccess(String userid){
-		this.setInfoMsg("Super, " + userid + ", Du hast Dich erfolgreich registriert");
+	public void setRegSuccess(String email){
+		this.setInfoMsg("Super, " + email + ", Du hast Dich erfolgreich registriert");
 		this.setActionMsg("geh jetzt zum Login");
+	}
+	public void setUhrzeitVonFehlt(){
+		this.setTimeErrorMsg("Bitte Uhrzeit im Format: dd.mm.yyyy angeben!");
+	}
+	public void setUhrzeitBisFehlt(){
+		this.setTimeErrorMsg("Bitte Uhrzeit im Format: dd.mm.yyyy angeben!");
 	}
 	
 	public String getInfoMsg() {
@@ -53,6 +64,14 @@ public class MsgBean {
 
 	public void setActionMsg(String actionMsg) {
 		this.actionMsg = actionMsg;
+	}
+	
+	public String getTimeErrorMsg() {
+		return timeErrorMsg;
+	}
+
+	public void setTimeErrorMsg(String timeErrorMsg) {
+		this.timeErrorMsg = timeErrorMsg;
 	}
 
 }

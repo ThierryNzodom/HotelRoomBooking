@@ -1,26 +1,24 @@
 package manage.JavaClass;
 
-import java.util.ArrayList;
 
 public class Zimmer {
 
-	String zID;	
+	String zID;
 	String zeit_von;
 	String zeit_bis;
-	int groesse;
+	String groesse;
 	double preis;
 	String istBelegt;
-	String belegungPerson;
 	
 	Zimmertyp ztyp;
-	ArrayList<User> belegungPersonen;
+//	ArrayList<User> belegungPersonen;
 	
 	public Zimmer() {
 		super();
 	}
 
 	public Zimmer(String zID, Zimmertyp ztyp, String zeit_von,
-			String zeit_bis, int groesse, double preis, String belegungPerson) {
+			String zeit_bis, String groesse, double preis, String istBelegt) {
 		super();
 		this.zID = zID;
 		this.ztyp = ztyp;
@@ -28,7 +26,7 @@ public class Zimmer {
 		this.zeit_bis = zeit_bis;
 		this.groesse = groesse;
 		this.preis = preis;
-		this.belegungPerson = belegungPerson;
+		this.istBelegt = istBelegt;
 	}
 
 	public String getzID() {
@@ -70,7 +68,11 @@ public class Zimmer {
 		this.zeit_bis = zeit_bis;
 	}
 
-	public int getGroesse() {
+	public void setGroesse(String groesse) {
+		this.groesse = groesse;
+	}
+	
+	public String getGroesse() {
 		return groesse;
 	}
 
@@ -83,24 +85,17 @@ public class Zimmer {
 	}
 	
 	public String getIstBelegt() {
-		if(this.zeit_von == null || this.zeit_bis == null){
-			istBelegt = "Nein";
-		} else istBelegt = "Ja";
 		return istBelegt;
 	}
 
-	public String getBelegungPerson() {
-		return belegungPerson;
-	}
-
-	public void setBelegungPerson(String belegungPerson) {
-		this.belegungPerson = belegungPerson;
+	public void setIstBelegt(String istBelegt) {
+		this.istBelegt = istBelegt;
 	}
 
 	@Override
 	public String toString() {
 		return "Zimmer [zID=" + zID + ", ztyp=" + ztyp + ", zeit_von=" + zeit_von + ", zeit_bis="
 				+ zeit_bis + ", groesse=" + groesse + ", preis=" + preis + ", istBelegt=" + istBelegt
-				+ ", belegungPerson=" + belegungPerson + "]";
+				+ "]";
 	}
 }

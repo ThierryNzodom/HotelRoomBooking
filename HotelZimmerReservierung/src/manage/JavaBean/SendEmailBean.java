@@ -32,7 +32,7 @@ public class SendEmailBean {
 	public static void main(String[] args) {
 		String toEmail =  "greatforother@gmail.com";
 		String emailSubject = "Hotelzimmer Reservierung";
-		String emailBody = "Hallo Mr. Mandfred Müller, \n"
+		String emailBody = "Hallo Mr. Müller, \n"
 				+ "Wenn du diese MAil liest, bedeutet dass du die Rechnung (im Anhang) bezahlt hast"
 				+ " und dass Wir morgen zusammen frühstücken werden :) . \n"
 				+ "\n"
@@ -109,8 +109,10 @@ public class SendEmailBean {
 		} 
 		catch (MessagingException me) {
 			me.printStackTrace();
-		}	
+		}
+		
 	}
+
 	public String getToEmail() {
 		return toEmail;
 	}

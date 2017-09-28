@@ -3,6 +3,7 @@ package manage.JavaClass;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+
 public class Warenkorb {
 
 //	-Speicherung der gewählten Artikel

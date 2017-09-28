@@ -7,22 +7,49 @@ import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
 
 import xdataBaseConnection.IOManager;
-import manage.JavaClass.Zimmer;
 import manage.JavaClass.Feiertag;
+import manage.JavaClass.Zimmer;
+import manage.JavaClass.Zimmertyp;
 
-public class ZimmerVewltungBean {
+public class ZimmerVerwaltungBean {
 
-	Zimmer zimmer;
+	String zID;
+	String zeit_von;
+	String zeit_bis;
+	String groesse;
+	double preis;
+	String istBelegt;
+	Zimmertyp ztyp;
+	
+	List<Zimmer> zimmerList = new ArrayList<Zimmer>();
 	Feiertag feiertag;
 	String fehler;
 	
+	
+	public ZimmerVerwaltungBean() {
+		super();
+	}
+	public ZimmerVerwaltungBean(String zID, String zeit_von, String zeit_bis, String groesse, double preis,
+			String istBelegt, Zimmertyp ztyp) {
+		super();
+		this.zID = zID;
+		this.zeit_von = zeit_von;
+		this.zeit_bis = zeit_bis;
+		this.groesse = groesse;
+		this.preis = preis;
+		this.istBelegt = istBelegt;
+		this.ztyp = ztyp;
+	}
+
 	// Variabeln für Datumsangaben	
 		Date dt = new Date();
 		SimpleDateFormat df = new SimpleDateFormat( "dd.MM.yyyy" );
@@ -31,10 +58,8 @@ public class ZimmerVewltungBean {
 		String[] alleZimmerClassic = {"CL001", "CL002", "CL003", "CL004", "CL005"};
 		String[] alleZimmerStandard = {"SD001", "SD002", "SD003", "SD004", "SD005"};
 		String[] alleZimmerComfort = {"CD001", "CD002", "CD003", "CD004", "CD005"};			
-		String[] feiertage = {"31.10.2017", "01.11.2017", "22.11.2017", "25.12.2017",
-				"26.12.2017", "01.01.2018", "30.03.2018", "01.04.2018", "02.04.2018",
-				"01.05.2018", "10.05.2018", "20.05.2018", "21.05.2018", "31.05.2018",
-				"03.10.2018", "01.11.2018", "25.12.2018", "26.12.2018"};
+		String[] feiertage = {"2017-08-08" , "2017-08-15" , "2017-10-03" ,"2017-10-31", 
+				"2017-11-01", "2017-11-22", "2017-12-25", "2017-12-26"};
 	// Hashsets für Ausgaben	
 		Set<String> alleCL = new HashSet<String>(Arrays.asList(alleZimmerClassic));
 		Set<String> alleSD = new HashSet<String>(Arrays.asList(alleZimmerStandard));
@@ -61,12 +86,12 @@ public class ZimmerVewltungBean {
 				System.out.println(sql);
 				try {
 					PreparedStatement prep = dbConn.prepareStatement(sql);
-					prep.setString(1, zimmer.getzID());
-					prep.setString(2, zimmer.getZtyp(zimmer.getzID()));
+					prep.setString(1, this.getzID());
+					prep.setObject(2, this.getZtyp());
 					ResultSet dbRes = prep.executeQuery();
 					System.out.println("SQL-Befehl erfolgreich ausgeführt");
 					
-				// Belegte Zimmer werden in Hashset eingefügt um sie in der View ausgeben zu können
+	// Belegte Zimmer werden in Hashset eingefügt um sie in der View ausgeben zu können
 					while (dbRes.next()){
 						String ziid = dbRes.getString("ZIMMERID");
 						String zt = dbRes.getString("ZIMMERTYP");
@@ -78,7 +103,7 @@ public class ZimmerVewltungBean {
 						zimmerprint.add(zfreiprint);
 					}
 					
-				// Selektierte belegte Zimmer werden von den gesamten Zimmern abgezogen, dass nur freie Zimmer bleiben					
+	// Selektierte belegte Zimmer werden von den gesamten Zimmern abgezogen, dass nur freie Zimmer bleiben					
 					zimmerSet.removeAll(zimmerfrei);
 					if(zimmerSet.isEmpty()){
 						System.out.println("Kein Zimmer frei in der gewählten Zeit");
@@ -106,20 +131,19 @@ public class ZimmerVewltungBean {
 	// Neue Zimmer anfügen
 		public void insertZimmer() throws SQLException, ClassNotFoundException{
 			String sql = "INSERT INTO zimmer" +
-						"(ZIMMERID, ZIMMERTYP, ZEIT_VON, ZEIT_BIS, GROESSE, PREIS, IST_BELEGT, BELEGUNGPERSON)" +
+				"(ZIMMERID, ZIMMERTYP, ZEIT_VON, ZEIT_BIS, GROESSE, PREIS, IST_BELEGT)" +
 						"VALUES" +
-						"(?,?,?,?,?)";
+						"(?,?,?,?)";
 			System.out.println(sql);
 			Connection dbConn = new IOManager().getConnection();
 			PreparedStatement prep = dbConn.prepareStatement(sql);
-			prep.setString(1, zimmer.getzID());
-			prep.setString(2, zimmer.getZtyp(zimmer.getzID()));
-			prep.setString(3, zimmer.getZeit_von());
-			prep.setString(4, zimmer.getZeit_bis());
-			prep.setInt(5, 	  zimmer.getGroesse());
-			prep.setDouble(6, zimmer.getPreis());
-			prep.setString(7, zimmer.getIstBelegt());
-			prep.setString(8, zimmer.getBelegungPerson());
+			prep.setString(1, this.getzID());
+			prep.setObject(2, this.getZtyp());
+			prep.setString(3, this.getZeit_von());
+			prep.setString(4, this.getZeit_bis());
+			prep.setString(5, this.getGroesse());
+			prep.setDouble(6, this.getPreis());
+			prep.setString(7, this.getIstBelegt());
 			prep.executeUpdate();
 			System.out.println("Satz erfolgreich eingefügt");
 		}
@@ -133,9 +157,9 @@ public class ZimmerVewltungBean {
 			System.out.println(sql);
 			Connection dbConn = new IOManager().getConnection();
 			PreparedStatement prep = dbConn.prepareStatement(sql);
-			prep.setString(1, zimmer.getZeit_von());
-			prep.setString(2, zimmer.getZeit_bis());
-			prep.setString(3, zimmer.getzID());		
+			prep.setString(1, this.getZeit_von());
+			prep.setString(2, this.getZeit_bis());
+			prep.setString(3, this.getzID());		
 			prep.executeUpdate();
 			System.out.println("Gebuchter Zeitraum wird erfolgreich geändert.");
 		}
@@ -147,14 +171,15 @@ public class ZimmerVewltungBean {
 			System.out.println(sql);
 			Connection dbConn = new IOManager().getConnection();
 			PreparedStatement prep = dbConn.prepareStatement(sql);
-			prep.setString(1, zimmer.getzID());			
+			prep.setString(1, this.getzID());			
 			prep.executeUpdate();
 			System.out.println("Zimmer erfolgreich geändert.");
 		}
 	// Zuvor selektierte Termine werden ausgegeben	
 //		public String getVorlesungenAsHtml(){
 //			String html = "";
-//			String free = "Für den gewählten Zeitraum finden folgende Vorlesungen statt: " + "\n";
+//			String free = "Für den gewählten Zeitraum 
+//		finden folgende Vorlesungen statt: " + "\n";
 //			
 //				Set<String> alle = zimmerfrei;
 //				Iterator<String> iter = alle.iterator();
@@ -167,50 +192,31 @@ public class ZimmerVewltungBean {
 //				zimmerfrei.clear();
 //				return free;
 //		}
-	// Zuvor selektierte freie Zimmer werden ausgegeben	
-		public String getFreieRaeumeAsHtml(){
-			String zID = null;
-			String html = "";
-			String frei = "Für den gewählten Zeitraum sind folgende Räume verfügbar: " + "\n";
-			if(zimmer.getZtyp(zID) == "Einzelzimmer"){			
-				Set<String> alle = zimmerSet;
-				Iterator<String> iter = alle.iterator();
-				while (iter.hasNext()){
-					if(iter.next().contains("CL")){
-						html += iter.next() + " ";
-					}	
-				}
-			}else
-			if(zimmer.getZtyp(zID) == "Doppelzimmer"){
-				Set<String> alle = zimmerSet;
-				Iterator<String> iter = alle.iterator();
-				while (iter.hasNext()){
-					if(iter.next().contains("SD")){
-						html += iter.next() + " ";
-					}  
-				}
-			}else
-			if(zimmer.getZtyp(zID) == "Suite"){
-				Set<String> alle = zimmerSet;
-				Iterator<String> iter = alle.iterator();
-				while (iter.hasNext()){
-					if(iter.next().contains("CD")){
-						html += iter.next() + " ";
-					}  
-				}
-			}	
-			frei = frei + html;
-			zimmerSet.clear();
-			return frei;			
-		}
+
 	// Methode die prüft ob die Endzeit vor der Startzeit liegt	
 		public boolean zeitCheck(String von, String bis) throws ParseException{
 			Date dtv = new Date();
 			Date dtb = new Date();
 			SimpleDateFormat dfv = new SimpleDateFormat("dd.MM.yyyy");
 			SimpleDateFormat dfb = new SimpleDateFormat("dd.MM.yyyy");
-			dtv = dfv.parse(von);
-			dtb = dfb.parse(bis);
+			try {
+				dtv = dfv.parse(von);
+			} catch (ParseException pe) {
+				// TODO: handle exception
+				pe.printStackTrace();
+			}
+			
+			System.out.println();
+			System.out.println(dtv + " ist dtv" );
+			try {
+				dtb = dfb.parse(bis);
+			} catch (ParseException pex) {
+				// TODO: handle exception
+				pex.printStackTrace();
+			}
+			
+			System.out.println(dtb + " ist dfb" );
+			System.out.println();
 			
 			if(dtb.before(dtv)){
 				return false;
@@ -234,10 +240,10 @@ public class ZimmerVewltungBean {
 			return diffDays;
 		}
 	//Preis eines Zimmers über eine Periode
-		public double preriodPreis(int periode) {
+		public double periodPreis(int periode) {
 			double preis;
-			preis = zimmer.getPreis() * periode;
-			zimmer.setPreis(preis);
+			preis = this.getPreis() * periode;
+			this.setPreis(preis);
 			return preis;
 		}
 		// Methode die vor dem Update prüft ob überhaupt ein Eintrag vorliegt	
@@ -251,9 +257,9 @@ public class ZimmerVewltungBean {
 						System.out.println(sql);
 					
 							PreparedStatement prep = dbConn.prepareStatement(sql);
-							prep.setString(1, zimmer.getZeit_von());
-							prep.setString(2, zimmer.getZeit_bis());
-							prep.setString(3, zimmer.getzID());
+							prep.setString(1, this.getZeit_von());
+							prep.setString(2, this.getZeit_bis());
+							prep.setString(3, this.getzID());
 							ResultSet dbRes = prep.executeQuery();
 							System.out.println("SQL-Befehl erfolgreich ausgeführt");
 							int index = 0;
@@ -267,9 +273,9 @@ public class ZimmerVewltungBean {
 					}
 					return false;
 				}	
-			// Methode die vor dem Insert prüft ob zu den eingegebenen Daten schon ein Termin existiert	
-				public boolean preCheckInsert() throws SQLException, ClassNotFoundException{
-					Connection dbConn = new IOManager().getConnection();
+	// Methode die vor dem Insert prüft ob zu den eingegebenen Daten schon ein Termin existiert	
+			public boolean preCheckInsert() throws SQLException, ClassNotFoundException{
+				Connection dbConn = new IOManager().getConnection();
 					if (dbConn != null){
 						String sql = "SELECT * FROM zimmer "
 								+ "WHERE (Zeit_von BETWEEN ? AND ? "
@@ -277,11 +283,11 @@ public class ZimmerVewltungBean {
 								+ " AND ZIMMERID = ? ;";
 						System.out.println(sql);
 							PreparedStatement prep = dbConn.prepareStatement(sql);
-							prep.setString(1, zimmer.getZeit_von());
-							prep.setString(2, zimmer.getZeit_bis());
-							prep.setString(3, zimmer.getZeit_von());
-							prep.setString(4, zimmer.getZeit_bis());
-							prep.setString(5, zimmer.getzID());
+							prep.setString(1, this.getZeit_von());
+							prep.setString(2, this.getZeit_bis());
+							prep.setString(3, this.getZeit_von());
+							prep.setString(4, this.getZeit_bis());
+							prep.setString(5, this.getzID());
 							ResultSet dbRes = prep.executeQuery();
 							System.out.println("SQL-Befehl erfolgreich ausgeführt");
 							int index = 0;
@@ -297,61 +303,148 @@ public class ZimmerVewltungBean {
 				}
 					return false;
 				}
-			// Methode die prüft ob es sich beim angegebenen Datum um einen Feiertag handelt	
-				public boolean feiertagCheckEinfach(){
-					boolean check = false;
-					for (int i = 0; i < feiertage.length; i++) {
-						if(zimmer.getZeit_von().equals(feiertage[i]) || zimmer.getZeit_bis().equals(feiertage[i])){
-							i = feiertage.length;
-							check = true;
-						}
-					}
-					if(check == true){
-						return false;
-					}else{
-						return true;
-					}
-				}
+	// Methode die prüft ob es sich beim angegebenen Datum um einen Feiertag handelt	
+	public boolean feiertagCheckEinfach(){
+		boolean check = false;
+		for (int i = 0; i < feiertage.length; i++) {
+	if(this.getZeit_von().equals(feiertage[i]) || this.getZeit_bis().equals(feiertage[i])){
+			i = feiertage.length;
+			check = true;
+		}
+			}
+			if(check == true){
+			return false;
+			}else{
+			return true;
+		}
+			}
 				
-				public void getFeiertageFromDb() throws ClassNotFoundException, SQLException{
-					Connection dbConn = new IOManager().getConnection();
-					if (dbConn != null){
-						String sql = "SELECT DATUM, FEIER FROM FEIERTAGE"
-								+ "WHERE datum = ? ;";
-						System.out.println(sql);
-						PreparedStatement prep = dbConn.prepareStatement(sql);
-						prep.setString(1, feiertag.getDatum());				
-						ResultSet dbRes = prep.executeQuery();
-						System.out.println("SQL-Befehl erfolgreich ausgeführt");
-						while(dbRes.next()){
-							feiertageSet.add(dbRes.getString(feiertag.getDatum()));
-						}
-					}
+	public void getFeiertageFromDb() throws ClassNotFoundException, SQLException{
+		Connection dbConn = new IOManager().getConnection();
+			if (dbConn != null){
+				String sql = "SELECT DATUM, FEIER FROM FEIERTAGE"
+						+ "WHERE datum = ? ;";
+				System.out.println(sql);
+				PreparedStatement prep = dbConn.prepareStatement(sql);
+				prep.setString(1, feiertag.getDatum());				
+				ResultSet dbRes = prep.executeQuery();
+				System.out.println("SQL-Befehl erfolgreich ausgeführt");
+				while(dbRes.next()){
+					feiertageSet.add(dbRes.getString(feiertag.getDatum()));
 				}
+			}
+		}
 				
-				public void getRaumFromDb() throws ClassNotFoundException, SQLException{
-					Connection dbConn = new IOManager().getConnection();
-					if (dbConn != null){
-						String sql = "SELECT * FROM zimmer "
-								+ "WHERE ZIMMERTYP LIKE ? ";
-						System.out.println(sql);
-						PreparedStatement prep = dbConn.prepareStatement(sql);
-						String zÍD = null;
-						prep.setObject(1, zimmer.getZtyp(zÍD));
-						ResultSet dbRes = prep.executeQuery();
-						System.out.println("SQL-Befehl erfolgreich ausgeführt");
-						while(dbRes.next()){
-							String b = dbRes.getString(zimmer.getzID());
-							zimmerSet.add(b);
-						}
-					}
-				}
+	public List<Zimmer> getRauemeFromDb() throws ClassNotFoundException, SQLException{
+		Connection dbConn = new IOManager().getConnection();
+		if (dbConn != null){
+			String sql = "SELECT * FROM ZIMMER "
+				+ "WHERE GROESSE = ?";
+		System.out.println(sql);
+		PreparedStatement prep = dbConn.prepareStatement(sql);
+		prep.setString(1, this.groesse);
+		ResultSet dbRes = prep.executeQuery();
+		System.out.println("SQL-Befehl erfolgreich ausgeführt");
+		System.out.println();
+		while(dbRes.next()){							
+			Zimmer zimmer = new Zimmer(zID, ztyp, zeit_von, zeit_bis, groesse, preis, istBelegt);
+			String zimmerid = dbRes.getString("ZIMMERID");
+			String zimmertyp = dbRes.getString("ZIMMERTYP");
+			String zeit_von = dbRes.getString("ZEIT_VON");
+			String zeit_bis = dbRes.getString("ZEIT_BIS");
+			String groesse = dbRes.getString("GROESSE");
+			double preis = dbRes.getDouble("PREIS");							
+			String istbelegt = dbRes.getString("IST_BELEGT");
+							
+		//Zimmer Values füllen
+			zimmer.setzID(zimmerid);
+			zimmer.getZtyp(zimmer.getzID());
+			zimmer.setGroesse(groesse);
+			zimmer.setPreis(preis);
+			zimmer.setZeit_von(zeit_von);
+			zimmer.setZeit_bis(zeit_bis);
+			zimmer.setIstBelegt(istbelegt);
+													
+	String zimmerDruecken = "Zimmer: " + zimmerid + "; Typ: " + zimmertyp + "; Groesse: " + groesse + "; Preis: " + preis + "; IST_BELEGT: " + istbelegt;
+							
+			zimmerList.add(zimmer);							
+			zimmerSet.add(zimmerDruecken);
+							
+			}
+		}					
+		System.out.println("Select from Zimmer erfolgreich.");					
+		return zimmerList;
+	}
+	
+		// Zuvor selektierte freie Zimmer werden ausgegeben	
+		public String getFreieRaeumeAsHtml(){
+			String html = "";
+			String frei = "Für Ihre gewählte Zimmerkonfiguration sind folgende Zimmer verfügbar: " 
+													+ "\n";
+		
+			Set<String> alle = zimmerSet;
+			Iterator<String> iter = alle.iterator();
+			while (iter.hasNext()){
+					html += iter.next() + "\n";	
+			}
+			frei = frei + html;
+			zimmerSet.clear();
+			return frei;			
+		}
 				
-				public String getFehler() {
-					return fehler;
-				}
+	public String[] getFeiertage() {
+		return feiertage;
+	}
+	public void setFeiertage(String[] feiertage) {
+		this.feiertage = feiertage;
+	}
+	public String getzID() {
+		return zID;
+	}
+	public void setzID(String zID) {
+		this.zID = zID;
+	}
+	public String getZeit_von() {
+		return zeit_von;
+	}
+	public void setZeit_von(String zeit_von) {
+		this.zeit_von = zeit_von;
+	}
+	public String getZeit_bis() {
+		return zeit_bis;
+	}
+	public void setZeit_bis(String zeit_bis) {
+		this.zeit_bis = zeit_bis;
+	}
+	public String getGroesse() {
+		return groesse;
+	}
+	public void setGroesse(String groesse) {
+		this.groesse = groesse;
+	}
+	public double getPreis() {
+		return preis;
+	}
+	public void setPreis(double preis) {
+		this.preis = preis;
+	}
+	public String getIstBelegt() {
+		return istBelegt;
+	}
+	public void setIstBelegt(String istBelegt) {
+		this.istBelegt = istBelegt;
+	}
+	public Zimmertyp getZtyp() {
+		return ztyp;
+	}
+	public void setZtyp(Zimmertyp ztyp) {
+		this.ztyp = ztyp;
+	}
+	public String getFehler() {
+		return fehler;
+	}
 
-				public void setFehler(String fehler) {
-					this.fehler = fehler;
-				}
+	public void setFehler(String fehler) {
+		this.fehler = fehler;
+	}
 }

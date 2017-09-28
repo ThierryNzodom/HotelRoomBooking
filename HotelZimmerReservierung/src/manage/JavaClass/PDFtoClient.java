@@ -29,48 +29,46 @@ public class PDFtoClient {
 		Zimmer zi1 = new Zimmer();
 		zi1.setzID("zimm10");
 		zi1.setPreis(10.5);
-		String p1 = "1";
+//		int p1 = 1;
 		
 		Zimmer zi2 = new Zimmer();
 		zi2.setzID("zimm20");
 		zi2.setPreis(20.5);
-//		String p2 = "2";
+		String p2 = "2";
 		
 		Zimmer zi3 = new Zimmer();
 		zi3.setzID("zimm30");
 		zi3.setPreis(30.5);
-//		String p3 = "3";
-		
+//		int p3 = 3;
 		
 		ziArrList.add(zi1);ziArrList.add(zi2);ziArrList.add(zi3);
 		wk.setZimmerArrayList(ziArrList);
-		float gesamtbetrag = (float) wk.getGesamtPreis();
-//		float gesamtpreis = zimmer.getPreis()* p2;
+		float gesamtpreis = (float) wk.getGesamtPreis();
 		
-		System.out.println(gesamtbetrag);
+		System.out.println(gesamtpreis);
 		
 		//Kopf der Rechnung
 		String unternehmen = "WImaster_HOTEL";
-		String strasse = "Killerstr.100";
-		String ort = "67059 Ludwigshafen";
+		String strasse = "Killerstr. 100";
+		String ort = "67059 LUdwigshafen";
 		String rechnungnummer = "RCH045";
 		String kunde = "Mandfred Müller";
 		
-		String k_strasse = "Geilestr.100";
+		String k_strasse = "Geilestr. 100";
 		String k_ort = "67061 LUdwigshafen";
 		
 		Font head1 = FontFactory.getFont("Arial", BaseFont.IDENTITY_H,
-				16, Font.BOLD);
+				20, Font.BOLD);
 		Font head2 = FontFactory.getFont("Arial", BaseFont.IDENTITY_H,
-				14, Font.BOLD);
+				18, Font.BOLD);
 		Font normalText = FontFactory.getFont("Arial", BaseFont.IDENTITY_H,
-				12, Font.NORMAL);
+				14, Font.NORMAL);
 //		Font head2 = FontFactory.getFont("Arial", BaseFont.IDENTITY_H,
 //				20, Font.BOLD);
 		Font betragFont = FontFactory.getFont("Arial", BaseFont.IDENTITY_H,
-				10, Font.BOLD, BaseColor.BLUE);
+				12, Font.NORMAL, BaseColor.BLUE);
 
-		Document document = new Document(PageSize.A4_LANDSCAPE);
+		Document document = new Document(PageSize.A4.rotate());
 	try {
 	PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream("Rechnung.pdf"));
 	
@@ -87,8 +85,10 @@ public class PDFtoClient {
 	document.add(new Phrase(ort, head2));
 	document.add(new Paragraph("\n"));
 	document.add(new Paragraph("\n"));
+	document.add(new Paragraph("\n"));
 	document.add(new Phrase("RechnungsNr. ", head2));
 	document.add(new Phrase(rechnungnummer, normalText));
+	document.add(new Paragraph("\n"));
 	document.add(new Paragraph("\n"));
 	document.add(new Paragraph("\n"));
 	document.add(new Phrase("Kunde: ", head2));
@@ -126,27 +126,17 @@ public class PDFtoClient {
 	while (iter.hasNext()) {
 		Zimmer zimmer = (Zimmer) iter.next();
 		c1 = new PdfPCell(new Phrase(zimmer.getzID(), normalText));
-		c2 = new PdfPCell(new Phrase(zimmer.getPreis()+ " €", normalText));
-		if(zimmer.getzID().contains("10")){
-			c3 = new PdfPCell(new Phrase(p1));
-			c4 = new PdfPCell(new Phrase( zi1.getPreis()*1 + " €", normalText));
-		} else if (zimmer.getzID().contains("20")) {
-			c3 = new PdfPCell(new Phrase(p1));
-			c4 = new PdfPCell(new Phrase( zi2.getPreis()*1 + " €", normalText));
-		} else {
-			c3 = new PdfPCell(new Phrase(p1));
-			c4 = new PdfPCell(new Phrase(zi3.getPreis()*1 + " €", normalText));
-		}		
-//		c3 = new PdfPCell(new Phrase(p2));
-//		c4 = new PdfPCell(new Phrase( zi3.getPreis()*p3 + " €", normalText));
-		table.addCell(c1);table.addCell(c2);table.addCell(c3);table.addCell(c4);		
+		c2 = new PdfPCell(new Phrase(zimmer.getzID()+ " €", normalText));
+		c3 = new PdfPCell(new Phrase(p2, normalText));
+		c4 = new PdfPCell(new Phrase(zimmer.getzID() + " €", normalText));
+		table.addCell(c1);table.addCell(c2);table.addCell(c3);table.addCell(c4);
 	}
 	
 	c1 = new PdfPCell(new Phrase("", normalText));
 	c2 = new PdfPCell(new Phrase("", normalText));
 	c3 = new PdfPCell(new Phrase("RECHNUNG BETRAG", betragFont));
 	c3.setHorizontalAlignment(Element.ALIGN_CENTER);
-	c4 = new PdfPCell(new Phrase(gesamtbetrag + " €", betragFont));
+	c4 = new PdfPCell(new Phrase(gesamtpreis + " €", betragFont));
 	c4.setHorizontalAlignment(Element.ALIGN_CENTER);
 	table.addCell(c1);table.addCell(c2);table.addCell(c3);table.addCell(c4);
 	
