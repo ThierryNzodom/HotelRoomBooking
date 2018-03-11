@@ -25,6 +25,36 @@ public class KundenBean {
 		this.loggedIn = false;		
 	}
 	
+	public boolean insertKundeIfNotExists() throws SQLException, NoConnectionException, ClassNotFoundException{
+		// true = User wurde eingefügt
+		if (this.checkKundeExists()){
+			return false;
+		}else{
+			this.insertKundeNoCheck();
+			return true;
+		}
+	}
+	
+	public boolean checkKundeExists() throws SQLException{
+		String sql = "SELECT VORNAME, NACHNAME, GDATUM " + 
+				"FROM KUNDE " +
+				"WHERE VORNAME = ? AND NACHNAME = ? AND GDATUM = ? ";
+		System.out.println(sql);
+		PreparedStatement prepStat = dbConn.prepareStatement(sql);
+		prepStat.setString(1, this.getKunde().getVorname());
+		prepStat.setString(2, this.getKunde().getNachname());
+		prepStat.setString(3, this.getKunde().getGdatum());
+		ResultSet dbRes = prepStat.executeQuery();
+		// return dbRes.next();
+		if (dbRes.next()){ 
+			System.out.println(this.getKunde().getNachname() + " schon registriert, Login geklappt!");
+			return true;
+		} else { 
+			System.out.println(this.getKunde().getNachname() + " noch nicht registriert, Login failed!");
+			return false;
+		}
+	}
+	
 	public int insertKundeNoCheck() throws SQLException, NoConnectionException, ClassNotFoundException {
 		// Feldlängen testen
 		dbConn = new IOManager().getConnection();
@@ -113,9 +143,7 @@ public class KundenBean {
 				System.out.println();
 			while(dbRes.next()){							
 			String kundennummer = dbRes.getString("KNR");
-			char c = kundennummer.charAt(0);
-			String ersteChar = String.valueOf(c);
-			zahl = Integer.valueOf(ersteChar);			
+			zahl = Integer.valueOf(kundennummer);			
 			}
 		}
 			System.out.println("Die Nummerzahl: " + zahl + " vom letzten Kunde wurde zurückgegeben.");

@@ -67,7 +67,7 @@ dojo.ready(function(){
 
 %>
 <% 
-if (!user.isLoggedIn()){
+if (user.getLoggedIn()!=1){
 	msg.setActionMsg("Bitte Logen Sie sich zuerst!");
 	response.sendRedirect("./ViewStart.jsp");
 	//response.sendRedirect("./ViewVerfuegbare.jsp?comeFrom=ViewStart");

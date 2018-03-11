@@ -54,7 +54,7 @@ String plz_stadt = request.getParameter("plz_stadt");
 String register = request.getParameter("register");
 if(register == null) register = "";
 
-if(register.equals("registrieren")){
+if(register.equals("Registrieren")){
 	
 	//Persönliche Daten der Kunde Objekt füllen
 	kunde.setAnrede(anrede);
@@ -84,7 +84,12 @@ if(register.equals("registrieren")){
 		response.sendRedirect("./ViewStart.jsp");
 	}else {
 		kb.setKunde(kunde);
-		kb.insertKundeNoCheck();	
+		if(kb.insertKundeIfNotExists()){
+			msg.setRegSuccess(kunde.getNachname());
+		}else{
+			msg.setAlreadyExists(kunde.getNachname());
+			
+			}	
 
 		//BenutzerDaten der Kunde Objekt füllen
 		kunde.setKnr(kb.getNummerZahl());
@@ -92,7 +97,7 @@ if(register.equals("registrieren")){
 		user.setEmail(email);
 		user.setPassword(password);
 		if(user.insertUserIfNotExists()){
-			msg.setRegSuccess(email);
+			msg.setRegSuccess(kunde.getNachname());
 		}else{
 			msg.setAlreadyExists(email);
 			

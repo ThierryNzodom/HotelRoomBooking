@@ -23,7 +23,7 @@ public class MsgBean {
 		this.setActionMsg("Wähle einen anständigen Nickname");
 	}	
 	public void setGeneralWelcome(){
-		this.setInfoMsg("Ihr WI_Master Hotel: Reservieren Sie!");
+		this.setInfoMsg("Ihr HS LU Hotel: Reservieren Sie!");
 		this.setActionMsg("Bitte registrieren Sie sich oder loggen Sie sich ein!");
 		this.setTimeErrorMsg("");
 	}
@@ -36,10 +36,10 @@ public class MsgBean {
 	}
 	public void setAlreadyExists(String email){
 		this.setInfoMsg("Die Email " + email + " ist schon vergeben");
-		this.setActionMsg("Wähle einen anderen Nickname aus");
+		this.setActionMsg("Geben Sie eine andere Email ein");
 	}
-	public void setRegSuccess(String email){
-		this.setInfoMsg("Super, " + email + ", Du hast Dich erfolgreich registriert");
+	public void setRegSuccess(String nachname_email){
+		this.setInfoMsg("Super, " + nachname_email + ", Du hast Dich erfolgreich registriert");
 		this.setActionMsg("geh jetzt zum Login");
 	}
 	public void setPersonAttribute(String personAttribut){

@@ -66,7 +66,7 @@ if(zimmersuchen.equals("suchen")){
 		int dfor = Integer.valueOf(doppelZimmerZahl);
 		int sfor = Integer.valueOf(suiteZahl);
 	// Zeitspanne abfangen
-	Buchung buchung = new Buchung();
+	Buchung buchung = bb.getBuchung();
 	
 	//Anzahl ZImmertyp abfangen
 	buchung.setZahlE(efor);
@@ -98,7 +98,7 @@ if(zimmersuchen.equals("suchen")){
 //out.print("Zimmergroesse..." + zimmergroesse + "<br/>");
 //out.print("Datumvon: " + datumVon + "<br/>");
 //out.print("Datumbis: " + datumBis + "<br/>");
-	response.sendRedirect("./ViewVerfuegbare.jsp");
+	response.sendRedirect("./ViewWarenkorb.jsp");
 }
 
 

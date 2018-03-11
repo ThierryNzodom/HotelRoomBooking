@@ -56,22 +56,8 @@ String buchungsDate = sdf.format(buchungdt);
 
 //Login
 if(registrieren.equals("Registrieren")){
+	
 	response.sendRedirect("./ViewGastDaten.jsp?comeFrom=ApplStart");
-	
-	if(email == "" || password == "") {
-		msg.setActionMsg("Fügen Sie bitte zuersmal ein Email oder Password ein!");
-		response.sendRedirect("./ViewStart.jsp");
-	} else {
-	session.setAttribute("user", user);	//user Daten in der session speichern.
-	
-	if(user.insertUserIfNotExists()){
-		msg.setRegSuccess(email);
-	}else{
-		msg.setAlreadyExists(email);
-		
-		}
-	response.sendRedirect("./ViewStart.jsp");
-	}
 	
 } else if(zumlogin.equals("Zum Login")){
 	if(email == "" || password == "") {
@@ -85,8 +71,9 @@ if(registrieren.equals("Registrieren")){
 		if (rc) {//email/pw passt
 			user.setLogIn(true);
 			user.setLoggedIn(1);
+			user.loginUser();
 			msg.setLoginSuccess();
-			response.sendRedirect("./ViewBelegung.jsp");
+			response.sendRedirect("./ViewStart.jsp");
 		}else{//email/pw passt nicht
 			user.setLogIn(false);
 			msg.setLoginFailed();

@@ -147,13 +147,13 @@ public class UserBean {
 		ResultSet results = prepStat.executeQuery();
 		System.out.println(sqlQuery);
 		while (results.next()) {
-			String email = results.getString("USERNAME");
-			String password = results.getString("PASSWORT");
+			String email = results.getString("EMAIL");
+			String password = results.getString("PASSWORD");
 			if (this.email.equals(email.trim()) && this.password.equals(password.trim())) {
 				System.out.println("Kunde ist schon angemeldet.");
-				String sqlUpdate = "UPDATE ACCOUNT SET LOGGEDIN = ? WHERE EMAIL = ?";
+				String sqlUpdate = "UPDATE USER SET LOGGEDIN = ? WHERE EMAIL = ?";
 				PreparedStatement prepStat2 = dbConn.prepareStatement(sqlUpdate);
-				prepStat2.setInt(1, 1);
+				prepStat2.setInt(1, this.getLoggedIn());
 				prepStat2.setString(2, email);
 				prepStat2.execute();
 				System.out.println(sqlUpdate);
@@ -163,7 +163,7 @@ public class UserBean {
 				return false;
 			}
 		}
-		System.out.println("Kunde nicht gefunden ");
+		System.out.println("User nicht gefunden");
 		return false;
 	}
 	public String toString(){

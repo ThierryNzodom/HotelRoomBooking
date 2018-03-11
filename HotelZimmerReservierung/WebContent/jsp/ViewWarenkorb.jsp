@@ -46,9 +46,17 @@ wkbean = (WarenkorbBean) session.getAttribute("wkbean");
 		wkbean = new WarenkorbBean();
 		session.setAttribute("wkbean", wkbean);
 }
-	if (user.isLoggedIn()){
+	%><%
+	if (user.getLoggedIn()!=1){
+		msg.setActionMsg("Bitte Logen Sie sich zuerst!");
+		response.sendRedirect("./ViewStart.jsp");
+		//response.sendRedirect("./ViewBelegung.jsp?comeFrom=ViewStart");
+	}
+	%><%
+	if (user.getLoggedIn()==1){
 		msg.setActionMsg("Ihre Daten sehen wie folgt aus:" + "\n");
 	}
+		
 String leer = "";
 %>
 

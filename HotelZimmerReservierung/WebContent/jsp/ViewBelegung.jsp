@@ -9,6 +9,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Insert title here</title>
+<script type="text/javascript" src="projekt.js"></script>
 <style type="text/css">@import "http://ajax.googleapis.com/ajax/libs/dojo/1.5/dijit/themes/claro/claro.css";</style>
 <script src="http://ajax.googleapis.com/ajax/libs/dojo/1.6/dojo/dojo.xd.js"></script>
 <script>
@@ -42,7 +43,7 @@ dojo.ready(function(){
 	}
 %>
 <% 
-if (!user.isLogIn()){
+if (user.getLoggedIn()!=1){
 	msg.setActionMsg("Bitte Logen Sie sich zuerst!");
 	response.sendRedirect("./ViewStart.jsp");
 	//response.sendRedirect("./ViewBelegung.jsp?comeFrom=ViewStart");
