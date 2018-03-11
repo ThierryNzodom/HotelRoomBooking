@@ -21,12 +21,12 @@ public class AppInstallUserTable {
 	public void doSomething() throws ClassNotFoundException, SQLException{
 //		this.dropUserTable();
 //		this.createUserTable();
-//		this.createTable();
+		this.createTable();
 //		this.deleteFirstUser();
 //		this.deleteTestusers();
 //		this.insertFirstUser();
 //		this.insertMoreUsers();
-		this.insertEinfach();
+//		this.insertEinfach();
 //		this.insertMoreUsersEinfach();
 	}
 	public void insertMoreUsers() throws SQLException{
@@ -148,9 +148,12 @@ public class AppInstallUserTable {
 	}
 	
 	public void createTable() throws SQLException{
-		String sql = "CREATE TABLE feiertage(" +
-						"DATUM   CHAR(16)     NOT NULL PRIMARY KEY, " +
-						"FEIER 	VARCHAR(255) 	NOT NULL " +						
+		String sql = "CREATE TABLE buchung(" +
+						"BUCHUNGSNUMMER VARCHAR(16) NOT NULL, " +
+						"POSITION INT(2) NOT NULL, " +
+						"STATUS VARCHAR(16) NOT NULL, " +
+						"ZIMMER_ID	VARCHAR(5)	NOT NULL, " +
+						"PRIMARY KEY (BUCHUNGSNUMMER,POSITION)" +
 					")";
 		System.out.println(sql);
 
@@ -158,6 +161,7 @@ public class AppInstallUserTable {
 		stmt.executeUpdate(sql);
 		System.out.println("SQL-Befehl erfolgreich ausgeführt");
 	}
+	
 	public void dropUserTable() throws SQLException{
 		String sql = "DROP TABLE USER";
 		System.out.println(sql);

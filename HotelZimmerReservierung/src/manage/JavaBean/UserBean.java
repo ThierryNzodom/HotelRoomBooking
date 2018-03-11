@@ -4,20 +4,21 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-
+import manage.JavaClass.Kunde;
 import xdataBaseConnection.IOManager;
 import xdataBaseConnection.MySQLAccess;
 import xdataBaseConnection.NoConnectionException;
 
 public class UserBean {
 
-//	String userid;
-//	String active;
-//	String admin;
-//	String username;
 	String password;
 	String email;
-	boolean loggedIn;
+	int loggedIn;
+	
+	boolean logIn;
+	
+	Kunde kunde;
+
 	Connection dbConn;
 	
 	public UserBean() throws ClassNotFoundException, SQLException, NoConnectionException{
@@ -25,11 +26,8 @@ public class UserBean {
 		
 		email    = "";
 		password = "";
-		this.loggedIn = false;
-//		userid   = "";
-//		active   = "";
-//		admin    = "";
-//		username = "";
+		loggedIn = 0;
+		logIn = false;
 		
 	}
 	
@@ -80,7 +78,7 @@ public class UserBean {
 	}
 	
 	public void prepareAttributesForDB() {
-//		if (this.userid.length() > 16) userid = userid.substring(0,16);
+//		if (this.knr.length() > 16) knr = knr.substring(0,16);
 //		if (this.username.length() > 256) username = username.substring(0,256);
 		if (this.email.length() > 256) email = email.substring(0,256);
 		if (this.password.length() > 32) password = password.substring(0,32);
@@ -107,21 +105,19 @@ public class UserBean {
 		
 		if(dbConn != null){
 		String sql = "INSERT INTO USER " +
-				"(EMAIL, PASSWORD) " +
+				"(EMAIL, PASSWORD, LOGGEDIN, KNR) " +
 				"VALUES " +
-				"(?,?)";
+				"(?,?,?,?)";
 		System.out.println(sql);
 		
 		try {
 			
 		PreparedStatement prepStat = dbConn.prepareStatement(sql);
-		
-//		prepStat.setString(1, this.getUserid());
 		prepStat.setString(1, this.getEmail());
 		prepStat.setString(2, this.getPassword());
-//		prepStat.setString(3, this.getActive());
-//		prepStat.setString(4, this.getAdmin());
-//		prepStat.setString(5, this.getUsername());
+		prepStat.setInt(3, this.getLoggedIn());
+		prepStat.setInt(4, this.kunde.getKnr());
+
 
 		prepStat.executeUpdate();
 		System.out.println("User Email: " + this.getEmail() + " erfolgreich eingefügt!");
@@ -140,59 +136,73 @@ public class UserBean {
 		return 98; //DB Fehler!
 	}		
 	}
-	
+	public boolean loginUser() throws SQLException, ClassNotFoundException {
+
+		dbConn = new IOManager().getConnection();
+
+		String sqlQuery = "SELECT EMAIL, PASSWORD FROM USER WHERE EMAIL = ? AND PASSWORD= ?";
+		PreparedStatement prepStat = dbConn.prepareStatement(sqlQuery);
+		prepStat.setString(1, this.email);
+		prepStat.setString(2, this.password);
+		ResultSet results = prepStat.executeQuery();
+		System.out.println(sqlQuery);
+		while (results.next()) {
+			String email = results.getString("USERNAME");
+			String password = results.getString("PASSWORT");
+			if (this.email.equals(email.trim()) && this.password.equals(password.trim())) {
+				System.out.println("Kunde ist schon angemeldet.");
+				String sqlUpdate = "UPDATE ACCOUNT SET LOGGEDIN = ? WHERE EMAIL = ?";
+				PreparedStatement prepStat2 = dbConn.prepareStatement(sqlUpdate);
+				prepStat2.setInt(1, 1);
+				prepStat2.setString(2, email);
+				prepStat2.execute();
+				System.out.println(sqlUpdate);
+				return true;
+			} else {
+				System.out.println("Der USER konnte nicht gefunden werden");
+				return false;
+			}
+		}
+		System.out.println("Kunde nicht gefunden ");
+		return false;
+	}
 	public String toString(){
 		String s = "UserBean mit ";
 				s+= "email: " + this.getEmail();	
 				s+= "password: " + this.getPassword() + ", ";
-//				s+= "active: " + this.getActive() + ", ";
-//				s+= "admin: " + this.getAdmin() + ", ";
-//				s+= "username: " + this.getUsername() + ", ";
-//				s+= "userid: " + this.getUserid() + ", ";
+				s+= "knr: " + this.kunde.getKnr() + ", ";
 							
 		return s;
 	}
 	
-//	public String getUserid() {
-//		return userid;
-//	}
-//	public void setUserid(String userid) {
-//		this.userid = userid;
-//	}
+	public boolean isLogIn() {
+		return logIn;
+	}
+	public void setLogIn(boolean logIn) {
+		this.logIn = logIn;
+	}
+	public Kunde getKunde() {
+		return kunde;
+	}
+	public void setKunde(Kunde kunde) {
+		this.kunde = kunde;
+	}
 	public String getPassword() {
 		return password;
 	}
 	public void setPassword(String password) {
 		this.password = password;
 	}
-//	public String getActive() {
-//		return active;
-//	}
-//	public void setActive(String active) {
-//		this.active = active;
-//	}
-//	public String getAdmin() {
-//		return admin;
-//	}
-//	public void setAdmin(String admin) {
-//		this.admin = admin;
-//	}
-//	public String getUsername() {
-//		return username;
-//	}
-//	public void setUsername(String username) {
-//		this.username = username;
-//	}
 	public String getEmail() {
 		return email;
 	}
 	public void setEmail(String email) {
 		this.email = email;
-	}	
-	public boolean isLoggedIn() {
+	}
+	public int getLoggedIn() {
 		return loggedIn;
 	}
-	public void setLoggedIn(boolean loggedIn) {
+	public void setLoggedIn(int loggedIn) {
 		this.loggedIn = loggedIn;
 	}
 

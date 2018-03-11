@@ -1,32 +1,24 @@
 package manage.JavaClass;
 
-
 public class Zimmer {
 
 	String zID;
-	String zeit_von;
-	String zeit_bis;
+	String ztyp;
 	String groesse;
 	double preis;
-	String istBelegt;
 	
-	Zimmertyp ztyp;
 //	ArrayList<User> belegungPersonen;
 	
 	public Zimmer() {
 		super();
 	}
 
-	public Zimmer(String zID, Zimmertyp ztyp, String zeit_von,
-			String zeit_bis, String groesse, double preis, String istBelegt) {
+	public Zimmer(String zID, String ztyp, String groesse, double preis) {
 		super();
 		this.zID = zID;
 		this.ztyp = ztyp;
-		this.zeit_von = zeit_von;
-		this.zeit_bis = zeit_bis;
 		this.groesse = groesse;
 		this.preis = preis;
-		this.istBelegt = istBelegt;
 	}
 
 	public String getzID() {
@@ -37,65 +29,86 @@ public class Zimmer {
 		this.zID = zID;
 	}
 
-	public String getZtyp(String zÍD) {		
-		String typ = "";
-		if(zID.contains("CL")){
-			ztyp = Zimmertyp.Einzelzimmer;
-			typ = "Einzelzimmer";
-		}else if(zID.contains("SD")){
-			ztyp = Zimmertyp.Doppelzimmer;
-			typ = "Doppelzimmer";
-		}else if(zID.contains("CD")){
-			ztyp = Zimmertyp.Suite;
-			typ = "Suite";
-		}
-		return typ;
+	public String getZtyp() {
+		return ztyp;
 	}
-
-	public String getZeit_von() {
-		return zeit_von;
+	public void setZtyp(String ztyp) {
+		this.ztyp = ztyp;
 	}
-
-	public void setZeit_von(String zeit_von) {
-		this.zeit_von = zeit_von;
-	}
-
-	public String getZeit_bis() {
-		return zeit_bis;
-	}
-
-	public void setZeit_bis(String zeit_bis) {
-		this.zeit_bis = zeit_bis;
-	}
-
 	public void setGroesse(String groesse) {
 		this.groesse = groesse;
 	}
-	
 	public String getGroesse() {
 		return groesse;
 	}
-
 	public double getPreis() {
 		return preis;
 	}
-
 	public void setPreis(double preis) {
 		this.preis = preis;
+	}	
+	public String getZimmeralsHtml(){
+		return			    
+					"<li>" + 
+			    		"<label>" +	
+			    			"<input type= \"checkbox\" name=\"zimmerfrei\" value = \""+this.toCopyString()+"\">" +
+			    			"Zimmer:" + this.zID + ",Typ:" + this.ztyp + ",Groesse:" 
+							+ this.groesse + ",Preis:" + this.preis  + " €" + 
+			    		"</label>" +
+			    	"</li>" + "</br>"; 		
 	}
-	
-	public String getIstBelegt() {
-		return istBelegt;
+	public String getWKZimmeralsHtml(String von, String bis) {		
+		String html = "<p>" + "Zimmer:" + this.zID + " Typ:" + this.ztyp + " Preis:" 
+							+ this.preis  + " €" + " Ankunft:" + von + " Abreise:" + bis 
+					+ "</p>" ;
+		return html; 
 	}
 
-	public void setIstBelegt(String istBelegt) {
-		this.istBelegt = istBelegt;
+	public String getZiAlsHtml(String zeit_von, String zeit_bis) {
+		String html = "<p>" + "Zimmer:" + this.zID + " Typ:" + this.ztyp + " Preis:" 
+							+ this.preis + " €" + "</p>";
+		return html;
 	}
+	public String getAAAlsHtml(String zeit_von, String zeit_bis) {
+		String html = "<p>" + "Abfahrt:" + zeit_von + "</p>" 
+					+ "<p>" + "Ankunft:" + zeit_bis + "</p>" ;
+		return html;
+	}
+
+	public String toHtmlZeile(){
+		String html = "<tr>\n";
+//		html += "	<td>" + this.name   + "</td>\n";
+//		html += "	<td>" + this.nachname + "</td>\n";
+//		html += "	<td>" + this.passwort + "</td>\n";
+//		html += "	<td>" + this.adresse    + "</td>\n";
+//		html += "	<td>" + this.telefonnummer    + "</td>\n";
+//		html += "	<td>" + this.email    + "</td>\n";
+//		html += "	<td>" + this.iban    + "</td>\n";
+//		html += "	<td>" + this.bic    + "</td>\n";
+		html += "</tr>\n";
+		return html;
+	}
+
+//	public String getBelegung(String zvon, String zbis) {
+//		String string = "";
+//		if(zvon == "00:00" && zbis == "00:00"){
+//			this.setIstBelegt("NEIN");
+//			string = "NEIN";
+//			System.out.println("ZImmer nicht belegt");
+//		} else {
+//			this.setIstBelegt("JA");
+//			System.out.println("Zimmer belegt");
+//			string = "JA";
+//		}
+//		return string;
+//	}
 
 	@Override
 	public String toString() {
-		return "Zimmer [zID=" + zID + ", ztyp=" + ztyp + ", zeit_von=" + zeit_von + ", zeit_bis="
-				+ zeit_bis + ", groesse=" + groesse + ", preis=" + preis + ", istBelegt=" + istBelegt
-				+ "]";
+		return "Zimmer [zID=" + zID + ", ztyp=" + ztyp + ", groesse=" + groesse + ", preis=" + preis + "]";
+	}
+	public String toCopyString() {
+		return "Zimmer:" + this.zID + ",Typ:" + this.ztyp + ",Groesse:" 
+				+ this.groesse + ",Preis:" + this.preis;
 	}
 }

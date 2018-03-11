@@ -1,5 +1,6 @@
 package manage.JavaClass;
 
+import manage.JavaClass.Zimmer;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.util.ArrayList;
@@ -19,7 +20,7 @@ import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
 
-public class PDFtoClient {
+public class RechnungToClient1 {
 	
 	public static void main(String[] args) {
 		
@@ -145,8 +146,8 @@ public class PDFtoClient {
 	document.close();
 	writer.close();
 		} 
-		catch (DocumentException e) {
-			e.printStackTrace();
+		catch (DocumentException ex) {
+			ex.printStackTrace();
 		}
 		catch (FileNotFoundException e) {
 			e.printStackTrace();

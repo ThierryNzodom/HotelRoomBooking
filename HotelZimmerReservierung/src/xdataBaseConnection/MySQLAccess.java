@@ -3,7 +3,6 @@ package xdataBaseConnection;
 import java.sql.SQLException;
 
 public class MySQLAccess extends JDBCAccess {
-
 	@Override
 	void setParms() {
 		dbDrivername = "com.mysql.jdbc.Driver";		

@@ -39,25 +39,17 @@ if(wkbean == null){
 	session.setAttribute("wkbean", wkbean);
 }
 
-	Zimmer zimmer = new Zimmer();
-	ArrayList<Zimmer> listZUbuchen = new ArrayList<Zimmer>();
+String gastStatus = request.getParameter("gastStatus");
+if(gastStatus == null) gastStatus = "";
 
-String selaendern = request.getParameter("selaendern");
-String zimmerbuchen = request.getParameter("zimmerbuchen");
-if(zimmerbuchen == null) zimmerbuchen = "";
-if(selaendern == null) selaendern = "";
-
-if(selaendern.equals("Zurueck/Ändern")){
-
-	wkbean.setZimmerArrayList(listZUbuchen);
+if(gastStatus.equals("Als Gast weiter")){
 	
-	response.sendRedirect("./ViewBelegung.jsp");
+	response.sendRedirect("./ViewGastDaten.jsp");
 
-}else if(zimmerbuchen.equals("Weiter")){
-	
+}else{
+
 	response.sendRedirect("./ViewStatusBestaetigung.jsp");
-} else
-	response.sendRedirect("./ViewBelegung.jsp");
+}
 
 %>
 </body>

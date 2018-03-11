@@ -21,52 +21,37 @@ import javax.mail.internet.MimeMultipart;
 
 public class SendEmailBean {
 	
-	final String fromEmail = "wimaster.hotel@gmail.com";
-	final String fromPasswort = "init12345";
-	final String emailSMTPserver = "smtp.gmail.com";
-	final String emailServerPort = "465";
+	String rechnungsnummer;
+	
 	String toEmail;
 	String emailSubject;
 	String emailBody;
 	
-	public static void main(String[] args) {
-		String toEmail =  "greatforother@gmail.com";
-		String emailSubject = "Hotelzimmer Reservierung";
-		String emailBody = "Hallo Mr. Müller, \n"
-				+ "Wenn du diese MAil liest, bedeutet dass du die Rechnung (im Anhang) bezahlt hast"
-				+ " und dass Wir morgen zusammen frühstücken werden :) . \n"
-				+ "\n"
-				+ "Kind Regards, \n"
-				+ "Tity Zozur a.k.a Fresh Montana \n"
-				+ "\n"
-				+ "ps: Die Rechnung sieht scheisse aus, ich weiß...LOL";
-		SendEmailBean sendEmailBean = new SendEmailBean(toEmail, emailSubject, emailBody);
-	}
-	
 	class SMTPAuthenticator extends Authenticator{
 		public PasswordAuthentication getPasswordAuthentication(){
-			return new PasswordAuthentication(fromEmail, fromPasswort);
+			return new PasswordAuthentication("greatforother@gmail.com", "Tity@013890!");
 		}
 	}
 	
-	public SendEmailBean(String toEmail, String emailSubject, String emailBody) {
+	public SendEmailBean(String toEmail, String emailSubject, String emailBody, String rechnungsnummer) {
 		super();
 		this.toEmail = toEmail;
 		this.emailSubject = emailSubject;
 		this.emailBody = emailBody;
+		this.rechnungsnummer = rechnungsnummer;
 		
 		//System properties
 		Properties properties = new Properties();
-		properties.put("mail.smtp.user", fromEmail);
-		properties.put("mail.smtp.host", emailSMTPserver);
-		properties.put("mail.smtp.port", emailServerPort);
+		properties.put("mail.smtp.user", "greatforother@gmail.com"); //fromEmail
+		properties.put("mail.smtp.host", "smtp.gmail.com"); //emailSMTPserver
+		properties.put("mail.smtp.port", "465"); //emailServerPort
 		properties.put("mail.smtp.starttls.enable", "true");
 		properties.put("mail.smtp.auth", "true");
-		properties.put("mail.smtp.socketFactory.port", emailServerPort);
+		properties.put("mail.smtp.socketFactory.port", "465");
 		properties.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
 		properties.put("mail.smtp.socketFactory.fallback", "false");
-		SecurityManager security = System.getSecurityManager();
-		
+        
+		SecurityManager security = System.getSecurityManager();		
 		
 		try {
 			Authenticator auth = new SMTPAuthenticator();
@@ -77,7 +62,7 @@ public class SendEmailBean {
 
 			//add Subject and send
 			msg.setSubject(emailSubject);
-			msg.setFrom(new InternetAddress(fromEmail));
+			msg.setFrom(new InternetAddress("greatforother@gmail.com"));
 			msg.addRecipient(Message.RecipientType.TO, new InternetAddress(toEmail));
 			
 			// Create the message part 
@@ -94,7 +79,8 @@ public class SendEmailBean {
 
 	         // Attachment
 	         messageBodyPart = new MimeBodyPart();
-	         String filename = "Rechnung.pdf";
+//	         String filename = "Rechnung.pdf";
+	         String filename = rechnungsnummer+"_"+"Rechnung.pdf";
 	         DataSource source = new FileDataSource(filename);
 	         messageBodyPart.setDataHandler(new DataHandler(source));
 	         messageBodyPart.setFileName(filename);
@@ -105,14 +91,13 @@ public class SendEmailBean {
 			
 			//send message
 			Transport.send(msg);
-			System.out.println("Message successfully send...");
+			System.out.println("E-MAIL successfully send...");
 		} 
 		catch (MessagingException me) {
 			me.printStackTrace();
 		}
 		
 	}
-
 	public String getToEmail() {
 		return toEmail;
 	}
@@ -137,4 +122,12 @@ public class SendEmailBean {
 		this.emailBody = emailBody;
 	}
 	
+	public String getRechnungsnummer() {
+		return rechnungsnummer;
+	}
+	
+	public void setRechnungsnummer(String rechnungsnummer) {
+		this.rechnungsnummer = rechnungsnummer;
+	}
+
 }

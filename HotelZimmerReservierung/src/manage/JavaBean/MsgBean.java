@@ -12,24 +12,23 @@ public class MsgBean {
 	
 	public void setLoginSuccess(){
 		this.setInfoMsg("Sie sind eingeloggt, Glückwunsch");
-		this.setActionMsg("Ihre Daten sehen wie folgt an:");
+		this.setActionMsg("");
 	}
 	public void setLoginFailed(){
 		this.setInfoMsg("Deine Anmeldung hat leider nicht geklappt");
-		this.setActionMsg("Versuche es nochmal, Registrieren wenn noch nicht getan.");
+		this.setActionMsg("Versuche es nochmal, Registrieren wenn noch nicht getan");
 	}
 	public void setUseridLeer(){
 		this.setInfoMsg("Dein Nickname muss mindestens ein Zeichen lang sein");
 		this.setActionMsg("Wähle einen anständigen Nickname");
 	}	
 	public void setGeneralWelcome(){
-		this.setInfoMsg("Ihr WI_Master Hotel: Zimmer Reservierung!");
-		this.setActionMsg("Bitte registieren Sie sich oder loggen Sie sich ersmal ein");
+		this.setInfoMsg("Ihr WI_Master Hotel: Reservieren Sie!");
+		this.setActionMsg("Bitte registrieren Sie sich oder loggen Sie sich ein!");
 		this.setTimeErrorMsg("");
 	}
 	public void setLoginFirst(){
-		this.setInfoMsg("Bitte Logen Sie sich zuerst!");
-		this.setActionMsg("Sonst können Sie nicht auf diese Tabreiter");
+		this.setActionMsg("Bitte Logen Sie sich zuerst!");
 	}
 	public void setSystemfehler(){
 		this.setInfoMsg("Es ist ein Fehler aufgetreten");
@@ -42,6 +41,10 @@ public class MsgBean {
 	public void setRegSuccess(String email){
 		this.setInfoMsg("Super, " + email + ", Du hast Dich erfolgreich registriert");
 		this.setActionMsg("geh jetzt zum Login");
+	}
+	public void setPersonAttribute(String personAttribut){
+		this.setInfoMsg("Bitte, " + personAttribut + " Bereich auffüllen");
+		this.setActionMsg("Es darf nicht leer sein");
 	}
 	public void setUhrzeitVonFehlt(){
 		this.setTimeErrorMsg("Bitte Uhrzeit im Format: dd.mm.yyyy angeben!");
