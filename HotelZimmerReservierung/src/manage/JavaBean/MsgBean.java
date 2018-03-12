@@ -34,6 +34,10 @@ public class MsgBean {
 		this.setInfoMsg("Es ist ein Fehler aufgetreten");
 		this.setActionMsg("Sage Deinem Admin Bescheid");
 	}
+	public void setLogin(){
+		this.setInfoMsg("Logen Sie sich erstmal bitte");
+		this.setActionMsg("Erst dann ausloggen");
+	}
 	public void setZimmerNotAvailable(String zimmertyp){
 		this.setInfoMsg("Es gibt keine " + zimmertyp + " mehr zur Verfügung");
 		this.setActionMsg("Selektieren Sie was Anderes!");
@@ -49,6 +53,10 @@ public class MsgBean {
 	public void setPersonAttribute(String personAttribut){
 		this.setInfoMsg("Bitte, " + personAttribut + " Bereich auffüllen");
 		this.setActionMsg("Es darf nicht leer sein");
+	}
+	public void setlogout(){
+		this.setInfoMsg("Sie haben sich ausgeloggt");
+		this.setActionMsg("bis bald");
 	}
 	public void setUhrzeitVonFehlt(){
 		this.setTimeErrorMsg("Bitte Uhrzeit im Format: dd.mm.yyyy angeben!");

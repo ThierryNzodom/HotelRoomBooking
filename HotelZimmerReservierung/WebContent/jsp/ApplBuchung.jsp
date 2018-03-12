@@ -68,6 +68,9 @@ String verbindBuchen = request.getParameter("verbindBuchen");
 if(zurueck == null) zurueck = "";
 if(verbindBuchen == null) verbindBuchen = "";
 
+String logout = request.getParameter("logout");
+if(logout == null) logout = "";
+
 if(zurueck.equals("Zurück")){
 	
 	
@@ -150,6 +153,12 @@ if(zurueck.equals("Zurück")){
 	SendEmailBean sendEmailBean = new SendEmailBean(toEmail, emailSubject, emailBody, rechnungsnummer);		
 	
 	response.sendRedirect("./ViewNachricht.jsp");	
+}else if(logout.equals("Logout")){
+	user.setLogIn(false);
+	user.logoutUser();
+	msg.setlogout();
+	response.sendRedirect("./ViewStart.jsp");
+	
 } else {
 	response.sendRedirect("./ViewBuchung.jsp");
 }

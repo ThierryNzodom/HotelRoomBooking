@@ -155,7 +155,7 @@ public class UserBean {
 				System.out.println("Kunde ist schon angemeldet.");
 				String sqlUpdate = "UPDATE USER SET LOGGEDIN = ? WHERE EMAIL = ?";
 				PreparedStatement prepStat2 = dbConn.prepareStatement(sqlUpdate);
-				prepStat2.setInt(1, this.getLoggedIn());
+				prepStat2.setInt(1, 1);
 				prepStat2.setString(2, email);
 				prepStat2.execute();
 				System.out.println(sqlUpdate);
@@ -167,6 +167,18 @@ public class UserBean {
 		}
 		System.out.println("User nicht gefunden");
 		return knr;
+	}
+	// Methode zum Ausloggen der Kunde
+	public boolean logoutUser() throws ClassNotFoundException, SQLException {
+		dbConn = new IOManager().getConnection();
+		String sqlUpdate = "UPDATE USER SET LOGGEDIN = ? WHERE EMAIL = ?;";
+		PreparedStatement prepStat = dbConn.prepareStatement(sqlUpdate);
+		prepStat.setInt(1, 0);
+		prepStat.setString(2, this.email);
+		prepStat.execute();
+		System.out.println(sqlUpdate);
+		System.out.println(this.email);
+		return true;
 	}
 	public String toString(){
 		String s = "UserBean mit ";

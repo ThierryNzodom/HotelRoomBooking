@@ -51,8 +51,10 @@ if(wkbean == null){
 
 String selaendern = request.getParameter("selaendern");
 String zimmerbuchen = request.getParameter("zimmerbuchen");
+String logout = request.getParameter("logout");
 if(zimmerbuchen == null) zimmerbuchen = "";
 if(selaendern == null) selaendern = "";
+if(logout == null) logout = "";
 
 if(selaendern.equals("Zurueck/Ändern")){
 
@@ -63,7 +65,13 @@ if(selaendern.equals("Zurueck/Ändern")){
 }else if(zimmerbuchen.equals("Weiter")){
 	
 	response.sendRedirect("./ViewBuchung.jsp");
-} else
+}else if(logout.equals("Logout")){
+	user.setLogIn(false);
+	user.logoutUser();
+	msg.setlogout();
+	response.sendRedirect("./ViewStart.jsp");
+	
+}else
 	response.sendRedirect("./ViewWarenkorb.jsp");
 
 %>

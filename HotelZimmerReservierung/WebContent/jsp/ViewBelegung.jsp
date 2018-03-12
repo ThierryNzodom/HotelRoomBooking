@@ -3,14 +3,18 @@
 <%@page import="manage.JavaBean.BuchungBean"%>
 <%@page import="java.util.Date"%>
 <%@ page import="java.util.Date,java.io.*,java.util.Enumeration"%>
-<%@ page language="java" pageEncoding="UTF-8"%>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<%@ page language="java" pageEncoding="UTF-8" session="true"%>
+<!DOCTYPE html PuserLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Insert title here</title>
+<link rel="stylesheet" type="text/css" href="../css/Projekt.css" />
 <script type="text/javascript" src="projekt.js"></script>
-<style type="text/css">@import "http://ajax.googleapis.com/ajax/libs/dojo/1.5/dijit/themes/claro/claro.css";</style>
+<script src="../js/datePicker.js"></script>
+<style type="text/css">
+@import "http://ajax.googleapis.com/ajax/libs/dojo/1.5/dijit/themes/claro/claro.css";
+</style>
 <script src="http://ajax.googleapis.com/ajax/libs/dojo/1.6/dojo/dojo.xd.js"></script>
 <script>
 dojo.ready(function(){
@@ -42,22 +46,24 @@ dojo.ready(function(){
 		session.setAttribute("msg", msg);
 	}
 %>
-<% 
-if (user.getLoggedIn()!=1){
-	msg.setActionMsg("Bitte Logen Sie sich zuerst!");
-	response.sendRedirect("./ViewStart.jsp");
-	//response.sendRedirect("./ViewBelegung.jsp?comeFrom=ViewStart");
-}
+<%
+	if (user.isLogIn()==false){
+		msg.setActionMsg("Bitte Logen Sie sich zuerst!");
+		response.sendRedirect("./ViewStart.jsp");
+	}
 %>
 <h1><jsp:getProperty property="infoMsg" name="msg"/></h1>
 <h3><jsp:getProperty property="actionMsg" name="msg"/></h3>
 
-<form method="get" action="./ApplBelegung.jsp" >
+<form method="post" action="./ApplBelegung.jsp" >
+
 <ul class="tabrow">
 			<li class=""><a href="ViewStart.jsp">HOME</a></li>
 			<li class="selected"><a href="ViewBelegung.jsp">SUCHE</a></li>
-			<li class=""><a href="ViewVerfuegbare.jsp">ANZEIGEN</a></li>
+			<li class=""><a href="ViewWarenkorb.jsp">ANZEIGEN</a></li>
+			<li class=""><input type="submit" name="logout" value="Logout" /></li>
 		</ul>
+
 	<h2>Zimmerkonfiguration</h2>
 	<table>
 		<tr>

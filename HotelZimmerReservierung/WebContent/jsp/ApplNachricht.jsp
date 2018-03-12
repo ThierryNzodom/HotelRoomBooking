@@ -54,9 +54,17 @@ wkZimmerList = wkbean.getZimmerArrayList();
 
 String zurueckStart = request.getParameter("zurueckStart");
 if(zurueckStart == null) zurueckStart = "";
+String logout = request.getParameter("logout");
+if(logout == null) logout = "";
 
 if(zurueckStart.equals("Zurück zur Startseite")){	
 	response.sendRedirect("./ViewStart.jsp");
+}else if(logout.equals("Logout")){
+	user.setLogIn(false);
+	user.logoutUser();
+	msg.setlogout();
+	response.sendRedirect("./ViewStart.jsp");
+	
 } else {
 	response.sendRedirect("./ViewNachricht.jsp");
 }

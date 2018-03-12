@@ -74,11 +74,12 @@ String datumBis = dfb.format(futureday);
 <h1><jsp:getProperty property="infoMsg" name="msg"/></h1>
 <h2><jsp:getProperty property="actionMsg" name="msg"/></h2>
 
-<form method="get" action="./ApplStart.jsp" >
+<form method="post" action="./ApplStart.jsp" >
 	<ul class="tabrow">
 		<li class="selected"><a href="ViewStart.jsp">HOMEPAGE</a></li>
 		<li class=""><a href="ViewBelegung.jsp">SUCHE</a></li>
-		<li class=""><a href="ViewVerfuegbare.jsp">ANZEIGEN</a></li>
+		<li class=""><a href="ViewWarenkorb.jsp">ANZEIGEN</a></li>
+		<li class=""><input type="submit" name="logout" value="Logout" /></li>
 	</ul>
 	
 	<table>
@@ -88,7 +89,7 @@ String datumBis = dfb.format(futureday);
 		</tr>
 		<tr>
 			<td>Password:</td>
-			<td><input type="password" name="password" width="45%" value="heritage"/></td>
+			<td><input type="password" name="password" width="45%" value=""/></td>
 		</tr>				
 		<tr>		
 			<td><input type="submit" name="zumlogin" value="Zum Login"/></td>

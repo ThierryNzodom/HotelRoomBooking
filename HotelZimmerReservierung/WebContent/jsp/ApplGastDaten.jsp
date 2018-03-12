@@ -52,6 +52,8 @@ String password = request.getParameter("password");
 String strasse = request.getParameter("strasse");
 String plz_stadt = request.getParameter("plz_stadt");
 String register = request.getParameter("register");
+String logout = request.getParameter("logout");
+if(logout == null) logout = "";
 if(register == null) register = "";
 
 if(register.equals("Registrieren")){
@@ -106,7 +108,13 @@ if(register.equals("Registrieren")){
 		response.sendRedirect("./ViewStart.jsp");
 	}
 	
-} else
+}else if(logout.equals("Logout")){
+	user.setLogIn(false);
+	user.logoutUser();
+	msg.setlogout();
+	response.sendRedirect("./ViewStart.jsp");
+	
+}else
 	response.sendRedirect("./ViewGastDaten.jsp");
 %>
 </body>

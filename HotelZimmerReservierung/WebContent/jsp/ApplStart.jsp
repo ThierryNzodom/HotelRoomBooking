@@ -1,5 +1,4 @@
 <%@page import="java.util.Date"%>
-<%@page import="manage.JavaClass.User"%>
 <%@page import="manage.JavaClass.Buchung"%>
 <%@page import="manage.JavaClass.Kunde"%>
 <%@page import="manage.JavaBean.UserBean"%>
@@ -8,7 +7,6 @@
 <%@page import="manage.JavaBean.KundenBean"%>
 <%@ page import="java.text.SimpleDateFormat"%>
 <%@ page import="java.util.GregorianCalendar"%>
-
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html PuserLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -57,6 +55,8 @@ String registrieren = request.getParameter("registrieren");
 if(registrieren == null) registrieren = "null";
 String zurBuchung = request.getParameter("zurBuchung");
 if(zurBuchung == null) zurBuchung = "null";
+String logout = request.getParameter("logout");
+if(logout == null) logout = "";
 
 Date buchungdt = new Date();
 SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.YYYY");
@@ -78,7 +78,6 @@ if(registrieren.equals("Registrieren")){
 		boolean rc = user.checkEmailPassword();
 		if (rc) {//email/pw passt
 			user.setLogIn(true);
-			user.setLoggedIn(1);
 			int knr = user.loginKnrUser();
 			
 			//Kunde mit Knr = ? aus DB holen
@@ -101,7 +100,18 @@ if(registrieren.equals("Registrieren")){
 	}
 }
 
-} else if(zurBuchung.equals("Zur Buchung gehen")){
+} else if(logout.equals("Logout")){
+	if(!user.isLogIn()){
+		msg.setLogin();
+		response.sendRedirect("./ViewStart.jsp");
+	}else{
+		user.setLogIn(false);
+		user.logoutUser();
+		msg.setlogout();
+		response.sendRedirect("./ViewStart.jsp");	
+	}
+	
+}else if(zurBuchung.equals("Zur Buchung gehen")){
 	if (!user.isLogIn()){
 		msg.setActionMsg("Bitte Logen Sie sich zuerst!");
 		response.sendRedirect("./ViewStart.jsp");

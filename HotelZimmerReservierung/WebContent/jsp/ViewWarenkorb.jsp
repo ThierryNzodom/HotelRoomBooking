@@ -6,11 +6,14 @@
 <%@page import="manage.JavaBean.KundenBean"%>
 <%@page import="manage.JavaBean.WarenkorbBean"%>
 <%@ page language="java" pageEncoding="UTF-8" session="true"%>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html PuserLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Insert title here</title>
+<link rel="stylesheet" type="text/css" href="../css/Projekt.css" />
+<script type="text/javascript" src="projekt.js"></script>
+<script src="../js/datePicker.js"></script>
 <style type="text/css">
 @import "http://ajax.googleapis.com/ajax/libs/dojo/1.5/dijit/themes/claro/claro.css";
 </style>
@@ -54,10 +57,9 @@ wkbean = (WarenkorbBean) session.getAttribute("wkbean");
 		session.setAttribute("wkbean", wkbean);
 }
 %><%
-	if (user.getLoggedIn()!=1){
+	if (user.isLogIn()==false){
 		msg.setActionMsg("Bitte Logen Sie sich zuerst!");
 		response.sendRedirect("./ViewStart.jsp");
-		//response.sendRedirect("./ViewBelegung.jsp?comeFrom=ViewStart");
 	}
 %><%
 	if (user.getLoggedIn()==1){
@@ -70,13 +72,17 @@ String leer = "";
 <h1><jsp:getProperty property="infoMsg" name="msg"/></h1>
 <h2><jsp:getProperty property="actionMsg" name="msg"/></h2>
 
-<form method="get" action="./ApplWarenkorb.jsp">
+<form method="post" action="./ApplWarenkorb.jsp">
+<ul class="tabrow">
+		<li class=""><a href="ViewStart.jsp">HOMEPAGE</a></li>
+		<li class=""><a href="ViewBelegung.jsp">SUCHE</a></li>
+		<li class="selected"><a href="ViewWarenkorb.jsp">ANZEIGEN</a></li>
+		<li class=""><input type="submit" name="logout" value="Logout" /></li>
+	</ul>
 <%
 out.print("TEST.............................................."+ "<br/>");
 out.print("E-Mail: " + user.getEmail() + "<br/>");
 out.print("Password: " + user.getPassword()+ "<br/>");
-out.print("Datumvon: " + bb.getBuchung().getZeit_von() + "<br/>");
-out.print("Datumbis: " + bb.getBuchung().getZeit_bis() + "<br/>");
 out.print("TEST.............................................."+ "<br/>");
 for (Zimmer z : wkbean.getZimmerArrayList()) {
 	out.print(z.toCopyString() + "<br/>");

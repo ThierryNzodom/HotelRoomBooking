@@ -19,15 +19,15 @@
 <title>Insert title here</title>
 </head>
 <body>
-<jsp:useBean id="ub" class="manage.JavaBean.UserBean" scope="session"/>
+<jsp:useBean id="user" class="manage.JavaBean.UserBean" scope="session"/>
 <jsp:useBean id="msg" class="manage.JavaBean.MsgBean" scope="session"/>
 <jsp:useBean id="bb" class="manage.JavaBean.BuchungBean" scope="session"/>
 <jsp:useBean id="wkbean" class="manage.JavaBean.WarenkorbBean" scope="session"/>
 <%
-ub = (UserBean) session.getAttribute("ub");
-if(ub == null){
-	ub = new UserBean();
-	session.setAttribute("ub", ub);
+user = (UserBean) session.getAttribute("user");
+if(user == null){
+	user = new UserBean();
+	session.setAttribute("user", user);
 }
 msg = (MsgBean) session.getAttribute("msg");
 if(msg == null){
@@ -61,6 +61,8 @@ String doppelZimmerZahl = request.getParameter("DoppelZimmer");
 String suiteZahl = request.getParameter("Suite");
 String zimmersuchen = request.getParameter("zimmersuchen");
 if(zimmersuchen == null) zimmersuchen = "";
+String logout = request.getParameter("logout");
+if(logout == null) logout = "";
 
 //Zimmer Konfiguration machen 
 if(zimmersuchen.equals("suchen")){		
@@ -112,6 +114,13 @@ wkbean.setZimmerArrayList(ziList);
 //out.print("Datumvon: " + datumVon + "<br/>");
 //out.print("Datumbis: " + datumBis + "<br/>");
 	response.sendRedirect("./ViewWarenkorb.jsp");
+
+}else if(logout.equals("Logout")){
+	user.setLogIn(false);
+	user.logoutUser();
+	msg.setlogout();
+	response.sendRedirect("./ViewStart.jsp");
+	
 }else
 	response.sendRedirect("./ViewBelegung.jsp");
 
