@@ -64,8 +64,13 @@ public class Zimmer {
 		return html; 
 	}
 
-	public String getZiAlsHtml(String zeit_von, String zeit_bis) {
+	public String getZiAlsHtml() {
 		String html = "<p>" + "Zimmer:" + this.zID + " Typ:" + this.ztyp + " Preis:" 
+							+ this.preis + " €" + "</p>";
+		return html;
+	}
+	public String getZahlAndZiAlsHtml(int zahl) {
+		String html = "<p>" + zahl + "x " + this.ztyp + " Preis: je " 
 							+ this.preis + " €" + "</p>";
 		return html;
 	}

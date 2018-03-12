@@ -3,6 +3,7 @@
 <%@page import="manage.JavaBean.UserBean"%>
 <%@page import="manage.JavaBean.MsgBean"%>
 <%@page import="manage.JavaBean.BuchungBean"%>
+<%@page import="manage.JavaBean.KundenBean"%>
 <%@page import="manage.JavaBean.WarenkorbBean"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
@@ -16,6 +17,7 @@
 <jsp:useBean id="user" class="manage.JavaBean.UserBean" scope="session"/>
 <jsp:useBean id="msg" class="manage.JavaBean.MsgBean" scope="session"/>
 <jsp:useBean id="bb" class="manage.JavaBean.BuchungBean" scope="session"/>
+<jsp:useBean id="kb" class="manage.JavaBean.KundenBean" scope="session"/>
 <jsp:useBean id="wkbean" class="manage.JavaBean.WarenkorbBean" scope="session"/>
 <%
 user = (UserBean) session.getAttribute("user");
@@ -31,7 +33,12 @@ if(msg == null){
 bb = (BuchungBean) session.getAttribute("bb");
 if(bb == null){
 	bb = new BuchungBean();
-	session.setAttribute("bb", msg);
+	session.setAttribute("bb", bb);
+}
+kb = (KundenBean) session.getAttribute("kb");
+if(kb == null){
+	kb = new KundenBean();
+	session.setAttribute("kb", kb);
 }
 wkbean = (WarenkorbBean) session.getAttribute("wkbean");
 if(wkbean == null){
@@ -55,9 +62,9 @@ if(selaendern.equals("Zurueck/Ändern")){
 
 }else if(zimmerbuchen.equals("Weiter")){
 	
-	response.sendRedirect("./ViewStatusBestaetigung.jsp");
+	response.sendRedirect("./ViewBuchung.jsp");
 } else
-	response.sendRedirect("./ViewBelegung.jsp");
+	response.sendRedirect("./ViewWarenkorb.jsp");
 
 %>
 </body>

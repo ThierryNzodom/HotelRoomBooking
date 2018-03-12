@@ -2,7 +2,7 @@
 <%@page import="manage.JavaBean.BuchungBean"%>
 <%@page import="manage.JavaBean.UserBean"%>
 <%@page import="manage.JavaBean.MsgBean"%>
-<%@page import="manage.JavaBean.LoginBean"%>
+<%@page import="manage.JavaBean.WarenkorbBean"%>
 <%@page import="manage.JavaClass.Zimmer"%>
 <%@page import="java.util.List"%>
 <%@page import="java.util.ArrayList"%>
@@ -21,8 +21,8 @@
 <body>
 <jsp:useBean id="ub" class="manage.JavaBean.UserBean" scope="session"/>
 <jsp:useBean id="msg" class="manage.JavaBean.MsgBean" scope="session"/>
-<jsp:useBean id="lb" class="manage.JavaBean.LoginBean" scope="session"/>
 <jsp:useBean id="bb" class="manage.JavaBean.BuchungBean" scope="session"/>
+<jsp:useBean id="wkbean" class="manage.JavaBean.WarenkorbBean" scope="session"/>
 <%
 ub = (UserBean) session.getAttribute("ub");
 if(ub == null){
@@ -54,6 +54,8 @@ ArrayList<Zimmer> vE = new ArrayList<Zimmer>();
 ArrayList<Zimmer> vD = new ArrayList<Zimmer>();
 ArrayList<Zimmer> vS = new ArrayList<Zimmer>();
 
+ArrayList<Zimmer> ziList = new ArrayList<Zimmer>();
+
 String einzelnZimmerZahl = request.getParameter("EinzelnZimmer");
 String doppelZimmerZahl = request.getParameter("DoppelZimmer");
 String suiteZahl = request.getParameter("Suite");
@@ -82,25 +84,36 @@ if(zimmersuchen.equals("suchen")){
 		vE = bb.zimmerfrei(zE, bE);
 	}
 	bb.setListZimmerFrei(vE);
+	vE = bb.getEZFreielist();
+	ziList.addAll(vE);
+	
 	if(!doppelZimmerZahl.equals("0")){
 		zD = bb.getDZimmerFromDb(); 
 		bD = bb.getDBelegungFromDb();
-		vD = bb.zimmerDfrei(zD, bD);
+		vD = bb.zimmerDfrei(zD, bD);		
 	}
 	bb.setListDZimmerFrei(vD);
+	vD = bb.getDZFreielist();
+	ziList.addAll(vD);
+	
 	if(!suiteZahl.equals("0")){
 		zS = bb.getSZimmerFromDb(); 
 		bS = bb.getSBelegungFromDb();
-		vS = bb.zimmerSfrei(zS, bS);
+		vS = bb.zimmerSfrei(zS, bS);	
 	}
 	bb.setListSZimmerFrei(vS);
+	vS = bb.getSFreielist();
+	ziList.addAll(vS);
+
+wkbean.setBuchung(bb.getBuchung());
+wkbean.setZimmerArrayList(ziList);
 			
 //out.print("Zimmergroesse..." + zimmergroesse + "<br/>");
 //out.print("Datumvon: " + datumVon + "<br/>");
 //out.print("Datumbis: " + datumBis + "<br/>");
 	response.sendRedirect("./ViewWarenkorb.jsp");
-}
-
+}else
+	response.sendRedirect("./ViewBelegung.jsp");
 
 %>
 </body>

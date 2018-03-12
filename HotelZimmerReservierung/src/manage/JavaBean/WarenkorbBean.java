@@ -112,13 +112,37 @@ public class WarenkorbBean {
 	} 
 	 //ANgzeige freie Zimmer als HTML ohne Ankunft und ABfahrt .
 	public String getFreieZiWKAsHtml(){
-			String html = "\n";					
+			String html = "\n";
+			int ez=0;int dz=0;int sz=0;
+			Zimmer clz = new Zimmer();
+			Zimmer sdz = new Zimmer();
+			Zimmer cdz = new Zimmer();
 				ArrayList<Zimmer> myList = this.getZimmerArrayList();
 				for (Zimmer zimmerfrei : myList) {
-					html += zimmerfrei.getZiAlsHtml(buchung.getZeit_von(), buchung.getZeit_bis()) + "\n";
+					if(zimmerfrei.getzID().contains("CL")){
+						clz = zimmerfrei;
+						ez = buchung.getZahlE();
+					}else if(zimmerfrei.getzID().contains("SD")){
+						sdz = zimmerfrei;
+						dz = buchung.getZahlD();
+					}else{
+						zimmerfrei.getzID().contains("CD");
+						cdz = zimmerfrei;
+						sz = buchung.getZahlS();
+					}					
 				}
-//			zimmerArrayList.clear();
-//			this.setZimmerArrayList(zimmerArrayList);
+				if(ez!=0){
+					String cl = clz.getZahlAndZiAlsHtml(ez) + "\n";
+					html = cl;
+				}
+				if(dz!=0){
+					String sd = sdz.getZahlAndZiAlsHtml(dz) + "\n";
+					html+=sd;
+				}
+				if(sz!=0){
+					String cd = cdz.getZahlAndZiAlsHtml(sz) + "\n";
+					html+=cd;
+				}
 			return html;		
 	}
 	 //ANgzeige freie Zimmer als HTML ohne Ankunft und ABfahrt .

@@ -136,12 +136,13 @@ public class UserBean {
 		return 98; //DB Fehler!
 	}		
 	}
-	public boolean loginUser() throws SQLException, ClassNotFoundException {
+	public int loginKnrUser() throws SQLException, ClassNotFoundException {
 
 		dbConn = new IOManager().getConnection();
 
-		String sqlQuery = "SELECT EMAIL, PASSWORD FROM USER WHERE EMAIL = ? AND PASSWORD= ?";
+		String sqlQuery = "SELECT EMAIL, PASSWORD, KNR FROM USER WHERE EMAIL = ? AND PASSWORD= ?";
 		PreparedStatement prepStat = dbConn.prepareStatement(sqlQuery);
+		int knr = 0;
 		prepStat.setString(1, this.email);
 		prepStat.setString(2, this.password);
 		ResultSet results = prepStat.executeQuery();
@@ -149,6 +150,7 @@ public class UserBean {
 		while (results.next()) {
 			String email = results.getString("EMAIL");
 			String password = results.getString("PASSWORD");
+			knr = results.getInt("KNR");
 			if (this.email.equals(email.trim()) && this.password.equals(password.trim())) {
 				System.out.println("Kunde ist schon angemeldet.");
 				String sqlUpdate = "UPDATE USER SET LOGGEDIN = ? WHERE EMAIL = ?";
@@ -157,14 +159,14 @@ public class UserBean {
 				prepStat2.setString(2, email);
 				prepStat2.execute();
 				System.out.println(sqlUpdate);
-				return true;
+				return knr;
 			} else {
 				System.out.println("Der USER konnte nicht gefunden werden");
-				return false;
+				return knr;
 			}
 		}
 		System.out.println("User nicht gefunden");
-		return false;
+		return knr;
 	}
 	public String toString(){
 		String s = "UserBean mit ";

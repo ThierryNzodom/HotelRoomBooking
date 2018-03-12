@@ -1,9 +1,11 @@
 <%@page import="java.util.Date"%>
 <%@page import="manage.JavaClass.User"%>
 <%@page import="manage.JavaClass.Buchung"%>
+<%@page import="manage.JavaClass.Kunde"%>
 <%@page import="manage.JavaBean.UserBean"%>
 <%@page import="manage.JavaBean.MsgBean"%>
 <%@page import="manage.JavaBean.BuchungBean"%>
+<%@page import="manage.JavaBean.KundenBean"%>
 <%@ page import="java.text.SimpleDateFormat"%>
 <%@ page import="java.util.GregorianCalendar"%>
 
@@ -19,6 +21,7 @@
 <jsp:useBean id="user" class="manage.JavaBean.UserBean" scope="session"/>
 <jsp:useBean id="msg" class="manage.JavaBean.MsgBean" scope="session"/>
 <jsp:useBean id="bb" class="manage.JavaBean.BuchungBean" scope="session"/>
+<jsp:useBean id="kb" class="manage.JavaBean.KundenBean" scope="session"/>
 
 <%
 user = (UserBean) session.getAttribute("user");
@@ -35,6 +38,11 @@ bb = (BuchungBean) session.getAttribute("bb");
 if(bb == null){
 	bb = new BuchungBean();
 	session.setAttribute("bb", msg);
+}
+kb = (KundenBean) session.getAttribute("kb");
+if(kb == null){
+	kb = new KundenBean();
+	session.setAttribute("kb", kb);
 }
 
 String email = request.getParameter("email");
@@ -71,7 +79,14 @@ if(registrieren.equals("Registrieren")){
 		if (rc) {//email/pw passt
 			user.setLogIn(true);
 			user.setLoggedIn(1);
-			user.loginUser();
+			int knr = user.loginKnrUser();
+			
+			//Kunde mit Knr = ? aus DB holen
+			Kunde kunde = new Kunde();
+			kunde = kb.getAngemeldeteKunde(knr);
+			kunde.setKnr(knr);
+			kb.setKunde(kunde); // kunde in kb speichern
+			
 			msg.setLoginSuccess();
 			response.sendRedirect("./ViewStart.jsp");
 		}else{//email/pw passt nicht

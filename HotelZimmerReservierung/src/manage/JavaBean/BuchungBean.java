@@ -224,10 +224,10 @@ public class BuchungBean {
 		Date udtb = new Date();
 		Date dtv = new Date();
 		Date dtb = new Date();
-		SimpleDateFormat dfuv = new SimpleDateFormat("dd.mm.yyyy");
-		SimpleDateFormat dfub = new SimpleDateFormat("dd.mm.yyyy");
-		SimpleDateFormat dfv = new SimpleDateFormat("dd.mm.yyyy");
-		SimpleDateFormat dfb = new SimpleDateFormat("dd.mm.yyyy");
+		SimpleDateFormat dfuv = new SimpleDateFormat("dd.MM.yyyy");
+		SimpleDateFormat dfub = new SimpleDateFormat("dd.MM.yyyy");
+		SimpleDateFormat dfv = new SimpleDateFormat("dd.MM.yyyy");
+		SimpleDateFormat dfb = new SimpleDateFormat("dd.MM.yyyy");
 		listZimmerFrei = einzelnZimmerList;
 		
 		for (Zimmer zimmer : einzelnZimmerList) {
@@ -275,10 +275,10 @@ public class BuchungBean {
 		Date udtb = new Date();
 		Date dtv = new Date();
 		Date dtb = new Date();
-		SimpleDateFormat dfuv = new SimpleDateFormat("dd.mm.yyyy");
-		SimpleDateFormat dfub = new SimpleDateFormat("dd.mm.yyyy");
-		SimpleDateFormat dfv = new SimpleDateFormat("dd.mm.yyyy");
-		SimpleDateFormat dfb = new SimpleDateFormat("dd.mm.yyyy");
+		SimpleDateFormat dfuv = new SimpleDateFormat("dd.MM.yyyy");
+		SimpleDateFormat dfub = new SimpleDateFormat("dd.MM.yyyy");
+		SimpleDateFormat dfv = new SimpleDateFormat("dd.MM.yyyy");
+		SimpleDateFormat dfb = new SimpleDateFormat("dd.MM.yyyy");
 		listDZimmerFrei = doppelZimmerList;
 		
 		for (Zimmer zimmer : doppelZimmerList) {
@@ -326,10 +326,10 @@ public class BuchungBean {
 		Date udtb = new Date();
 		Date dtv = new Date();
 		Date dtb = new Date();
-		SimpleDateFormat dfuv = new SimpleDateFormat("dd.mm.yyyy");
-		SimpleDateFormat dfub = new SimpleDateFormat("dd.mm.yyyy");
-		SimpleDateFormat dfv = new SimpleDateFormat("dd.mm.yyyy");
-		SimpleDateFormat dfb = new SimpleDateFormat("dd.mm.yyyy");
+		SimpleDateFormat dfuv = new SimpleDateFormat("dd.MM.yyyy");
+		SimpleDateFormat dfub = new SimpleDateFormat("dd.MM.yyyy");
+		SimpleDateFormat dfv = new SimpleDateFormat("dd.MM.yyyy");
+		SimpleDateFormat dfb = new SimpleDateFormat("dd.MM.yyyy");
 		listSZimmerFrei = suiteList;
 		
 		for (Zimmer zimmer : suiteList) {
@@ -440,44 +440,40 @@ public class BuchungBean {
 			prep.executeUpdate();
 			System.out.println("Gebuchte Räume werden erfolgreich Storniert.");
 		}
-		public String getFreieRaeumeEAsHtml(){
-//			String html = "\n";
-			int zahlE = buchung.getZahlE();
-			String frei = "Für den gewählten Zeitraum sind folgende EinzelnZimmer verfügbar: " + "\n";
+		public ArrayList<Zimmer> getEZFreielist(){
+			int zahlE = buchung.getZahlE(); //anzahl der zu selektierende Zimmer
+			ArrayList<Zimmer> selList = new ArrayList<Zimmer>(); // liste der selektierten Zimmer
 			Iterator<Zimmer> iter = listZimmerFrei.iterator();
-			if(zahlE==0){
-				frei += "Keine Einzelnzimmer ausgewählt." + "\n";
-			}
+				
 			for (int i = 0; i < zahlE; i++) {
 				try {
-//					while (iter.hasNext() && i < zahlE) {
-						frei += iter.next().getZimmeralsHtml();
-//						}
+					if (iter.hasNext()) {
+						Zimmer zimmer = iter.next();
+						selList.add(zimmer);
+						}else{
+							System.out.println("Es ist keine Einzelnzimmer mehr verfügbar");
+						}
 				} catch (NoSuchElementException nSe) {
 					// TODO: handle exception
 					nSe.printStackTrace();
-				}
-				
-			}	
-//			for (Zimmer zimmerfrei : listZimmerFrei) {
-//					frei += zimmerfrei.getZimmeralsHtml();
-//				}
-			listZimmerFrei.clear();
-			return frei;		
-		}
-		public String getFreieRaeumeDAsHtml(){
-//			String html = "\n";
-			int zahlD = buchung.getZahlD();
-			String frei = "Für den gewählten Zeitraum sind folgende DoppelZimmer verfügbar: " + "\n";
-			Iterator<Zimmer> iter = listDZimmerFrei.iterator();
-			if(zahlD==0){
-				frei += "Keine Doppelzimmer ausgewählt." + "\n";
+					}	
 			}
+//			listZimmerFrei.clear();
+			return selList;		
+		}
+		public ArrayList<Zimmer> getDZFreielist(){
+			int zahlD = buchung.getZahlD();
+			ArrayList<Zimmer> selList = new ArrayList<Zimmer>();
+			Iterator<Zimmer> iter = listDZimmerFrei.iterator();
+
 			for (int i = 0; i < zahlD; i++) {				
 				try {
-//					while (iter.hasNext() && i < zahlD) {
-						frei += iter.next().getZimmeralsHtml();
-//						}
+					if (iter.hasNext()) {
+						Zimmer zimmer = iter.next();
+						selList.add(zimmer);
+						}else{
+							System.out.println("Es ist keine DoppelZimmer mehr verfügbar");
+						}
 				} catch (NoSuchElementException nSe) {
 					// TODO: handle exception
 					nSe.printStackTrace();
@@ -486,29 +482,29 @@ public class BuchungBean {
 //			for (Zimmer zimmerfrei : listDZimmerFrei) {
 //					frei += zimmerfrei.getZimmeralsHtml();
 //				}
-			listDZimmerFrei.clear();
-			return frei;		
+//			listDZimmerFrei.clear();
+			return selList;		
 		}
-		public String getFreieRaeumeSAsHtml(){
-//			String html = "\n";
+		public ArrayList<Zimmer> getSFreielist(){
 			int zahlS = buchung.getZahlS();
-			String frei = "Für den gewählten Zeitraum sind folgende Suite verfügbar: " + "\n";
+			ArrayList<Zimmer> selList = new ArrayList<Zimmer>();
 			Iterator<Zimmer> iter = listSZimmerFrei.iterator();
-			if(zahlS==0){
-				frei += "Keine Suite ausgewählt." + "\n";
-			}
+
 			for (int i = 0; i < zahlS; i++) {				
 				try {
-//					while (iter.hasNext() && i < zahlS) {
-						frei += iter.next().getZimmeralsHtml();
-//						}
+					if (iter.hasNext()) {
+						Zimmer zimmer = iter.next();
+						selList.add(zimmer);
+						}else{
+							System.out.println("Es ist keine Suite mehr verfügbar");
+						}
 				} catch (NoSuchElementException nSe) {
 					// TODO: handle exception
 					nSe.printStackTrace();
 				}
 			}	
-			listSZimmerFrei.clear();
-			return frei;		
+//			listSZimmerFrei.clear();
+			return selList;		
 		}
 		// Methode die prüft ob die Endzeit vor der Startzeit liegt	
 				public boolean zeitCheck(String von, String bis) throws java.text.ParseException {

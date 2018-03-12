@@ -55,6 +55,35 @@ public class KundenBean {
 		}
 	}
 	
+	public Kunde getAngemeldeteKunde(int knr) throws SQLException{
+		String sql = "SELECT ANREDE, VORNAME, NACHNAME, GDATUM, TELNUMMER, ADRESSE " + 
+				"FROM KUNDE " +
+				"WHERE KNR = ? ";
+		Kunde kunde = new Kunde();
+		System.out.println(sql);
+		PreparedStatement prepStat = dbConn.prepareStatement(sql);
+		prepStat.setInt(1, knr);
+		ResultSet dbRes = prepStat.executeQuery();
+		// return dbRes.next();
+		if (dbRes.next()){
+			String anrede = dbRes.getString("ANREDE");
+			String vorname = dbRes.getString("VORNAME");
+			String nachname = dbRes.getString("NACHNAME");
+			String gdatum = dbRes.getString("GDATUM");
+			String telnummer = dbRes.getString("TELNUMMER");
+			String adresse = dbRes.getString("ADRESSE");
+			kunde.setAnrede(anrede);
+			kunde.setVorname(vorname);
+			kunde.setNachname(nachname);
+			kunde.setGdatum(gdatum);
+			kunde.setTelnummer(telnummer);
+			kunde.setAdresse(adresse);
+		} else { 
+			System.out.println("Kunde noch nicht registriert!");	
+		}
+		return kunde;
+	}
+	
 	public int insertKundeNoCheck() throws SQLException, NoConnectionException, ClassNotFoundException {
 		// Feldlängen testen
 		dbConn = new IOManager().getConnection();
@@ -96,15 +125,14 @@ public class KundenBean {
 	public void updateKunde() throws SQLException, ClassNotFoundException{
 		Connection dbConn = new IOManager().getConnection();
 		String sql = "UPDATE KUNDE "	+
-					"SET TITEL = ?, " 	+
-					"SET VORNAME = ? " 		+
-					"SET NACHNAME = ? " 	+
-					"SET GDATUM = ?, " 	+
-					"SET TELNUMMER= ? " 		+
-					"SET EMAIL = ? " 	+
-					"SET ADRESSE = ? " 	+
-					"SET AUFTRAGSUMME = ? " 	+
-					"WHERE EMAIL = ? ";
+					"SET ANREDE = ?, " 	+
+					"VORNAME = ?, " 		+
+					"NACHNAME = ?, " 	+
+					"GDATUM = ?, " 	+
+					"TELNUMMER = ?, " 	+
+					"ADRESSE = ?, " 	+
+					"AUFTRAGSUMME = ? " 	+
+					"WHERE KNR = ?; ";
 		System.out.println(sql);
 //		Connection dbConn = new IOManager().getConnection();
 		PreparedStatement prepStat = dbConn.prepareStatement(sql);
@@ -113,9 +141,9 @@ public class KundenBean {
 		prepStat.setString(3, kunde.getNachname());
 		prepStat.setString(4, kunde.getGdatum());
 		prepStat.setString(5, kunde.getTelnummer());
-		prepStat.setString(6, kunde.getEmail());
-		prepStat.setString(7, kunde.getAdresse());
-		prepStat.setDouble(8, this.auftragsumme);		
+		prepStat.setString(6, kunde.getAdresse());
+		prepStat.setDouble(7, this.auftragsumme);
+		prepStat.setInt(8, kunde.getKnr());
 		prepStat.executeUpdate();
 		System.out.println("Kunde wird erfolgreich geändert.");
 	}

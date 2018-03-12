@@ -53,8 +53,16 @@ wkbean = (WarenkorbBean) session.getAttribute("wkbean");
 		wkbean = new WarenkorbBean();
 		session.setAttribute("wkbean", wkbean);
 }
-
+%><%
+	if (user.getLoggedIn()!=1){
+		msg.setActionMsg("Bitte Logen Sie sich zuerst!");
+		response.sendRedirect("./ViewStart.jsp");
+		//response.sendRedirect("./ViewBelegung.jsp?comeFrom=ViewStart");
+	}
 %>
+
+<h1><jsp:getProperty property="infoMsg" name="msg"/></h1>
+<h2><jsp:getProperty property="actionMsg" name="msg"/></h2>
 
 <form method="get" action="./ApplBuchung.jsp">
 
@@ -71,10 +79,10 @@ wkbean = (WarenkorbBean) session.getAttribute("wkbean");
 <jsp:getProperty name="wkbean" property="freieAAAlsHtml" />
 
 <h4 style="color: green;">Persönliche Daten</h4>
-<p><%=kb.getKunde().getTitel()+" "+kb.getKunde().getVorname()+" "+kb.getKunde().getNachname()%></p>
+<p><%=kb.getKunde().getAnrede()+" "+kb.getKunde().getVorname()+" "+kb.getKunde().getNachname()%></p>
 <p><%=kb.getKunde().getAdresse()%></p>
 
-<p>GESAMTPREIS: <%=auftragsumme%></p>
+<p>GESAMTPREIS: <%=auftragsumme + " €"%></p>
 
 <input type="submit" name="zurueck" value="Zurück">
 <input type="submit" name="verbindBuchen" value="Verbindlich buchen">

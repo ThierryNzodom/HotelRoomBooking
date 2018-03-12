@@ -102,7 +102,7 @@ if(register.equals("Registrieren")){
 			msg.setAlreadyExists(email);
 			
 			}
-		
+		kb.setKunde(kunde);
 		response.sendRedirect("./ViewStart.jsp");
 	}
 	

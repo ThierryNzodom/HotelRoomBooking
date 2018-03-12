@@ -3,6 +3,7 @@
 <%@page import="manage.JavaBean.MsgBean"%>
 <%@page import="manage.JavaBean.BuchungBean"%>
 <%@page import="manage.JavaBean.UserBean"%>
+<%@page import="manage.JavaBean.KundenBean"%>
 <%@page import="manage.JavaBean.WarenkorbBean"%>
 <%@ page language="java" pageEncoding="UTF-8" session="true"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -24,6 +25,7 @@ dojo.ready(function(){
 <jsp:useBean id="user" class="manage.JavaBean.UserBean" scope="session"/>
 <jsp:useBean id="msg" class="manage.JavaBean.MsgBean" scope="session"/>
 <jsp:useBean id="bb" class="manage.JavaBean.BuchungBean" scope="session"/>
+<jsp:useBean id="kb" class="manage.JavaBean.KundenBean" scope="session"/>
 <jsp:useBean id="wkbean" class="manage.JavaBean.WarenkorbBean" scope="session"/>
 <%
 user = (UserBean) session.getAttribute("user");
@@ -39,20 +41,25 @@ msg = (MsgBean) session.getAttribute("msg");
 bb = (BuchungBean) session.getAttribute("bb");
 	if(bb == null){
 		bb = new BuchungBean();
-		session.setAttribute("bb", msg);
+		session.setAttribute("bb", bb);
+}
+kb = (KundenBean) session.getAttribute("kb");
+	if(kb == null){
+		kb = new KundenBean();
+		session.setAttribute("kb", kb);
 }
 wkbean = (WarenkorbBean) session.getAttribute("wkbean");
 	if(wkbean == null){
 		wkbean = new WarenkorbBean();
 		session.setAttribute("wkbean", wkbean);
 }
-	%><%
+%><%
 	if (user.getLoggedIn()!=1){
 		msg.setActionMsg("Bitte Logen Sie sich zuerst!");
 		response.sendRedirect("./ViewStart.jsp");
 		//response.sendRedirect("./ViewBelegung.jsp?comeFrom=ViewStart");
 	}
-	%><%
+%><%
 	if (user.getLoggedIn()==1){
 		msg.setActionMsg("Ihre Daten sehen wie folgt aus:" + "\n");
 	}
@@ -61,7 +68,6 @@ String leer = "";
 %>
 
 <h1><jsp:getProperty property="infoMsg" name="msg"/></h1>
-<h2>Zimmer Suche</h2>
 <h2><jsp:getProperty property="actionMsg" name="msg"/></h2>
 
 <form method="get" action="./ApplWarenkorb.jsp">
@@ -87,7 +93,8 @@ out.print("TEST.............................................."+ "<br/>");
 	wkZimmerList = wkbean.getZimmerArrayList();
 %>
 
-	<jsp:getProperty name="wkbean" property="freieRaeumeWKAsHtml" />
+	<jsp:getProperty name="wkbean" property="freieZiWKAsHtml" />
+	<jsp:getProperty name="wkbean" property="freieAAAlsHtml" />
 	<p style="color: red;">GESAMTPREIS: <%=String.valueOf(wkbean.getGesamtPreis(wkZimmerList))+" €" %></p>
 	
 	<table>

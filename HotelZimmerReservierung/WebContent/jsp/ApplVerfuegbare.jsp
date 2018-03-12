@@ -3,7 +3,6 @@
 <%@page import="manage.JavaBean.MsgBean"%>
 <%@page import="manage.JavaBean.BuchungBean"%>
 <%@page import="manage.JavaBean.WarenkorbBean"%>
-<%@page import="manage.JavaBean.ZimmerVerwaltungBean"%>
 <%@page import="java.util.List"%>
 <%@page import="java.util.ArrayList"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
@@ -19,7 +18,6 @@
 <jsp:useBean id="msg" class="manage.JavaBean.MsgBean" scope="session"/>
 <jsp:useBean id="bb" class="manage.JavaBean.BuchungBean" scope="session"/>
 <jsp:useBean id="wkbean" class="manage.JavaBean.WarenkorbBean" scope="session"/>
-<jsp:useBean id="zbean" class="manage.JavaBean.ZimmerVerwaltungBean" scope="session"/>
 <%
 user = (UserBean) session.getAttribute("user");
 if(user == null){
@@ -35,11 +33,6 @@ bb = (BuchungBean) session.getAttribute("bb");
 if(bb == null){
 	bb = new BuchungBean();
 	session.setAttribute("bb", msg);
-}
-zbean = (ZimmerVerwaltungBean) session.getAttribute("zbean");
-if(zbean == null){
-	zbean = new ZimmerVerwaltungBean();
-	session.setAttribute("zbean", zbean);
 }
 wkbean = (WarenkorbBean) session.getAttribute("wkbean");
 if(wkbean == null){

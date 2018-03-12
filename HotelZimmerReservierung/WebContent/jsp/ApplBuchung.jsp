@@ -71,12 +71,23 @@ if(verbindBuchen == null) verbindBuchen = "";
 if(zurueck.equals("Zurück")){
 	
 	
-	response.sendRedirect("./ViewGastDaten.jsp");
+	response.sendRedirect("./ViewWarenkorb.jsp");
 } else if (verbindBuchen.equals("Verbindlich buchen")){
+	
+	 //Update AuftragSumme der Kunde.
+	 kb.updateKunde();
+	 
+		int knr = user.loginKnrUser();
+		
+		//Kunde mit Knr = ? aus DB holen
+		Kunde kunde = new Kunde();
+		kunde = kb.getAngemeldeteKunde(knr);
+		kunde.setKnr(knr);
+		kb.setKunde(kunde); // kunde in kb speichern
 	
 	//Buchunug bzw. Bündelung mit Buchungsnummer erstellen. (Insert in DB)
 	Buchung buchung = bb.getBuchung();
-	Kunde kunde = kb.getKunde();
+	/* Kunde kunde = kb.getKunde(); */
 	//Get letzte Nummerzahl from DB
 	int letzeBuchungzahl = bb.getNummerZahl();
 	int nummerzahl = letzeBuchungzahl+1;
@@ -98,16 +109,11 @@ if(zurueck.equals("Zurück")){
 			bb.setBuchung(buchung);
 			bb.insertBuchung();
 		}
-	
-	//insert Kunde in der DB
- 	if(kb.isLoggedIn() == false){
-		kb.insertKundeNoCheck();
-	}
-	
-	//Rechnung mit Rechungnunner erstellen (Insert in DB)
+	 
+	//Rechnung mit Rechungsnummer erstellen (Insert in DB)
 	Rechnung rechnung = new Rechnung();
-	int letzKnrFromDB = kb.getNummerZahl();
-	kunde.setKnr(letzKnrFromDB);
+	/* int letzKnrFromDB = kb.getNummerZahl(); */
+	/* kunde.setKnr(letzKnrFromDB); */
 	rechnung.setBuchung(buchung);
 	rechnung.setKunde(kunde);
 	rechnung.setGesamtpreis(kb.getAuftragsumme());
@@ -131,9 +137,9 @@ if(zurueck.equals("Zurück")){
 	
 	
 	//Email Senden (Attachement: Rechnung.pdf)
-	String toEmail =  kb.getKunde().getEmail();
+	String toEmail =  user.getEmail();
 		String emailSubject = "Ihre Rechnung zur Zimmer Reservierung";
-		String emailBody = "Guten Tag "+kb.getKunde().getTitel()+" "+kb.getKunde().getNachname()+","+ " \n"
+		String emailBody = "Guten Tag "+kb.getKunde().getAnrede()+" "+kb.getKunde().getNachname()+","+ " \n"
 				+ "anbei erhalten Sie Ihre Rechnung für Ihre Buchung in unserem Hotel HS LU Hotel. \n"
 				+ "Vielen Dank für Ihr Vertrauen. \n"
 				+ "Wir freuen uns darauf Sie bei uns begrüßen zu dürfen. \n"

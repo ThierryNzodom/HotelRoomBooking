@@ -27,7 +27,7 @@ public class RechnungToClient {
 	int anzahlNacht;
 		
 	//Kopf der Rechnung
-	String unternehmen = "WImaster_HOTEL";
+	String unternehmen = "HS LU HOTEL";
 	String strasse = "Killerstr. 100";
 	String ort = "67059 LUdwigshafen";
 	
@@ -109,7 +109,7 @@ public class RechnungToClient {
 	c1.setHorizontalAlignment(Element.ALIGN_CENTER);
 	PdfPCell c2 = new PdfPCell(new Phrase("Preis/Nacht", head2));
 	c2.setHorizontalAlignment(Element.ALIGN_CENTER);
-	PdfPCell c3 = new PdfPCell(new Phrase("Nächte", head2));
+	PdfPCell c3 = new PdfPCell(new Phrase("Anzahl", head2));
 	c3.setHorizontalAlignment(Element.ALIGN_CENTER);
 	PdfPCell c4 = new PdfPCell(new Phrase("Preis", head2));
 	c4.setHorizontalAlignment(Element.ALIGN_CENTER);
@@ -127,8 +127,8 @@ public class RechnungToClient {
 		String realPM = preisMultiply+" €";
 		c1 = new PdfPCell(new Phrase(zimmer.getzID(), normalText));
 		c2 = new PdfPCell(new Phrase(einzelnpreis, normalText));
-		c3 = new PdfPCell(new Phrase(String.valueOf(anzahlNacht), normalText));
-		c4 = new PdfPCell(new Phrase(realPM, normalText));
+		c3 = new PdfPCell(new Phrase("1", normalText));
+		c4 = new PdfPCell(new Phrase(einzelnpreis, normalText));
 		table.addCell(c1);table.addCell(c2);table.addCell(c3);table.addCell(c4);
 	}
 	

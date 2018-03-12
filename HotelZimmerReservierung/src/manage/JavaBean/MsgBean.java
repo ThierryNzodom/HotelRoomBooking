@@ -34,6 +34,10 @@ public class MsgBean {
 		this.setInfoMsg("Es ist ein Fehler aufgetreten");
 		this.setActionMsg("Sage Deinem Admin Bescheid");
 	}
+	public void setZimmerNotAvailable(String zimmertyp){
+		this.setInfoMsg("Es gibt keine " + zimmertyp + " mehr zur Verfügung");
+		this.setActionMsg("Selektieren Sie was Anderes!");
+	}
 	public void setAlreadyExists(String email){
 		this.setInfoMsg("Die Email " + email + " ist schon vergeben");
 		this.setActionMsg("Geben Sie eine andere Email ein");

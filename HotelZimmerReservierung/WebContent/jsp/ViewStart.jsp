@@ -1,6 +1,7 @@
 <%@page import="manage.JavaBean.MsgBean"%>
 <%@page import="manage.JavaBean.UserBean"%>
 <%@page import="manage.JavaBean.BuchungBean"%>
+<%@page import="manage.JavaBean.KundenBean"%>
 <%@page import="java.util.Date"%>
 <%@ page import="java.text.SimpleDateFormat"%>
 <%@ page import="java.util.GregorianCalendar"%>
@@ -46,6 +47,7 @@ String datumBis = dfb.format(futureday);
 <jsp:useBean id="user" class="manage.JavaBean.UserBean" scope="session"/>
 <jsp:useBean id="msg" class="manage.JavaBean.MsgBean" scope="session"/>
 <jsp:useBean id="bb" class="manage.JavaBean.BuchungBean" scope="session"/>
+<jsp:useBean id="kb" class="manage.JavaBean.KundenBean" scope="session"/>
 
 <%user = (UserBean) session.getAttribute("user");
 	if(user == null){
@@ -61,6 +63,11 @@ String datumBis = dfb.format(futureday);
 	if(bb == null){
 		bb = new BuchungBean();
 		session.setAttribute("bb", msg);
+	}
+	kb = (KundenBean) session.getAttribute("kb");
+	if(kb == null){
+		kb = new KundenBean();
+		session.setAttribute("kb", kb);
 	}
 %>
 
