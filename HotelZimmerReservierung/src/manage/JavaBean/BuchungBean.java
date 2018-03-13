@@ -15,11 +15,15 @@ import com.sun.org.apache.xerces.internal.impl.xpath.regex.ParseException;
 
 import xdataBaseConnection.IOManager;
 import manage.JavaClass.Buchung;
+import manage.JavaClass.Kunde;
 import manage.JavaClass.Zimmer;
 
 public class BuchungBean {
 
 	Buchung buchung;
+	Kunde kunde;
+	String stringZimmer;
+	ArrayList<Buchung> buchList = new ArrayList<>();
 	// Variabeln für Datumsangaben	
 		Date dt = new Date();
 		SimpleDateFormat df = new SimpleDateFormat( "dd.MM.yyyy" );
@@ -35,7 +39,22 @@ public class BuchungBean {
 	ArrayList<Zimmer> listZimmerFrei = new ArrayList<Zimmer>();
 	ArrayList<Zimmer> listDZimmerFrei = new ArrayList<Zimmer>();
 	ArrayList<Zimmer> listSZimmerFrei = new ArrayList<Zimmer>();
+	//Variable for Admin
+	String buchnr;
+	String buchdatum;
+	String zvon;
+	String zbis;
 	
+
+	public BuchungBean() {
+		super();
+		buchnr = "";
+		buchdatum = "";
+		zvon = "";
+		zbis = "";
+		stringZimmer = "";
+		
+	}
 	public ArrayList<Zimmer> getEZimmerFromDb() throws ClassNotFoundException, SQLException{
 		Connection dbConn = new IOManager().getConnection();
 		if (dbConn != null){
@@ -411,34 +430,18 @@ public class BuchungBean {
 			prep.executeUpdate();
 			System.out.println("Buchung erfolgreich eingefügt");
 		}
-		// Update Methode für die Umbuchung
-		public void umbuchen() throws SQLException, ClassNotFoundException{
+		// Update Methode für die Status der Buchung
+		public void updateStatusBuchung(String bnr) throws SQLException, ClassNotFoundException{
 			Connection dbConn = new IOManager().getConnection();
-			String sql = "UPDATE buchung " 		+
-						"SET BDATUM = ?, " 	+
-						"STATUS = ? " 		+
-						"ZIMMERID = ? " 		+
-						"WHERE BUCHUNGSNUMMER = ? AND POSITION = ?;";
+			String sql = "UPDATE BUCHUNG " 		+
+						"SET STATUS = ? " 	+
+						"WHERE BUCHUNGSNUMMER = ?;";
 			System.out.println(sql);
-//			Connection dbConn = new IOManager().getConnection();
 			PreparedStatement prep = dbConn.prepareStatement(sql);
-			prep.setString(1, buchung.getBdatum());
-			prep.setString(2, buchung.getStatus());
-			prep.setString(3, buchung.getZiD());		
+			prep.setString(1, "storniert");
+			prep.setString(2, bnr);		
 			prep.executeUpdate();
-			System.out.println("Gebuchte Räume werden erfolgreich geändert.");
-		}
-		// delete Methode für die Stornierung
-		public void buchungStornieren() throws SQLException, ClassNotFoundException{
-			Connection dbConn = new IOManager().getConnection();
-			String sql = "delete from BUCHUNG WHERE BUCHUNGSNUMMER = ? AND POSITION = ?;";
-			System.out.println(sql);
-//			Connection dbConn = new IOManager().getConnection();
-			PreparedStatement prep = dbConn.prepareStatement(sql);		
-			prep.setString(1, buchung.getBuchungsnummer());
-			prep.setInt(2, buchung.getPosition());
-			prep.executeUpdate();
-			System.out.println("Gebuchte Räume werden erfolgreich Storniert.");
+			System.out.println("Gebuchte Zimmer wurden erfolgreich auf storniert gesetzt.");
 		}
 		public ArrayList<Zimmer> getEZFreielist(){
 			int zahlE = buchung.getZahlE(); //anzahl der zu selektierende Zimmer
@@ -503,8 +506,88 @@ public class BuchungBean {
 					nSe.printStackTrace();
 				}
 			}	
-//			listSZimmerFrei.clear();
+			//listSZimmerFrei.clear();
 			return selList;		
+		}
+		//Gibt eine Buchung zurück
+		public ArrayList<Buchung> getBuchungKundeFromRnr(String rechnr) throws SQLException, ClassNotFoundException {
+			Connection dbConn = new IOManager().getConnection();
+			
+			ArrayList<Buchung> buchList = new ArrayList<>();
+			Kunde kd = new Kunde();
+
+			String sqlQuery = "SELECT * FROM RECHNUNG WHERE RID = ?";
+			PreparedStatement prepStat = dbConn.prepareStatement(sqlQuery);
+			prepStat.setString(1, rechnr);
+			ResultSet results = prepStat.executeQuery();
+			System.out.println(sqlQuery);
+			while (results.next()) {
+				buchnr = results.getString("BNR");
+				int knr = results.getInt("KNR");
+				double gpreis = results.getDouble("GESAMTPREIS");
+				String sqlUpdate = "SELECT * FROM BUCHUNG WHERE BUCHUNGSNUMMER = ? AND STATUS = \"aktiv\"";
+				PreparedStatement prepStat2 = dbConn.prepareStatement(sqlUpdate);
+				prepStat2.setString(1, buchnr);
+				ResultSet rset = prepStat2.executeQuery();
+				System.out.println(sqlUpdate);
+				while(rset.next()){
+					Buchung selBuchung = new Buchung();
+					String buchungsnummer = rset.getString("BUCHUNGSNUMMER");
+					int position = rset.getInt("POSITION");
+					String bdatum = rset.getString("BDATUM");
+					String status = rset.getString("STATUS");
+					String zvon = rset.getString("ZEIT_VON");
+					String zbis = rset.getString("ZEIT_VON");
+					String zid = rset.getString("ZIMMER_ID");
+						
+					//Kunde Values füllen
+					selBuchung.setBuchungsnummer(buchungsnummer);
+					selBuchung.setPosition(position);
+					selBuchung.setBdatum(bdatum);
+					selBuchung.setStatus(status);
+					selBuchung.setZeit_von(zvon);
+					selBuchung.setZeit_bis(zbis);
+					selBuchung.setZiD(zid);
+					
+					buchList.add(selBuchung);
+					}
+				String sql = "SELECT * FROM KUNDE WHERE KNR = ?";
+				PreparedStatement pStat = dbConn.prepareStatement(sql);
+				pStat.setInt(1, knr);
+				ResultSet rlset = pStat.executeQuery();
+				System.out.println(sql);
+				while(rlset.next()){								
+					String anrede = rlset.getString("ANREDE");
+					String vorname = rlset.getString("VORNAME");
+					String nachname = rlset.getString("NACHNAME");
+					String gdatum = rlset.getString("GDATUM");
+					String telnummer = rlset.getString("TELNUMMER");
+					String adresse = rlset.getString("ADRESSE");
+					
+					//Kunde Values füllen
+					kd.setAnrede(anrede);
+					kd.setVorname(vorname);
+					kd.setNachname(nachname);
+					kd.setGdatum(gdatum);
+					kd.setTelnummer(telnummer);
+					kd.setAdresse(adresse);
+					kd.setAuftragsumme(gpreis);
+					
+					this.kunde = kd;
+				}			
+				}
+			System.out.println("Buchung Und Kunde wurden erfolgreich selectiert");
+			return buchList;
+		}
+		//Gibt String Zimmer aus
+		public String getMyString (ArrayList<Buchung> buchungslist){
+			Iterator<Buchung> iter = buchungslist.iterator();
+			String gebuchteZimmer = "";
+			while(iter.hasNext()) {
+				 this.buchung = iter.next();
+				 gebuchteZimmer += buchung.getZiD()+ " ";
+				}
+			return gebuchteZimmer;
 		}
 		// Methode die prüft ob die Endzeit vor der Startzeit liegt	
 				public boolean zeitCheck(String von, String bis) throws java.text.ParseException {
@@ -542,6 +625,12 @@ public class BuchungBean {
 	}
 	public void setBuchung(Buchung buchung) {
 		this.buchung = buchung;
+	}
+	public Kunde getKunde() {
+		return kunde;
+	}
+	public void setKunde(Kunde kunde) {
+		this.kunde = kunde;
 	}
 	public ArrayList<Zimmer> getListZimmerFrei() {
 		return listZimmerFrei;
@@ -597,5 +686,42 @@ public class BuchungBean {
 	public void setSuiteList(ArrayList<Zimmer> suiteList) {
 		this.suiteList = suiteList;
 	}
+	public String getBuchnr() {
+		return buchnr;
+	}
+	public void setBuchnr(String buchnr) {
+		this.buchnr = buchnr;
+	}
+	public String getBuchdatum() {
+		return buchdatum;
+	}
+	public void setBuchdatum(String buchdatum) {
+		this.buchdatum = buchdatum;
+	}
+	public String getZvon() {
+		return zvon;
+	}
+	public void setZvon(String zvon) {
+		this.zvon = zvon;
+	}
+	public String getZbis() {
+		return zbis;
+	}
+	public void setZbis(String zbis) {
+		this.zbis = zbis;
+	}
+	public String getStringZimmer() {
+		return stringZimmer;
+	}
+	public void setStringZimmer(String stringZimmer) {
+		this.stringZimmer = stringZimmer;
+	}
+	public ArrayList<Buchung> getBuchList() {
+		return buchList;
+	}
+	public void setBuchList(ArrayList<Buchung> buchList) {
+		this.buchList = buchList;
+	}
+	
 	
 }

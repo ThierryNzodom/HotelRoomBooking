@@ -41,6 +41,7 @@ public class UserBean {
 		}
 	}
 	
+	//Bei der Anmeldung
 	public boolean checkUserExists() throws SQLException{
 		String sql = "SELECT email " + 
 				"FROM USER " +
@@ -48,6 +49,24 @@ public class UserBean {
 		System.out.println(sql);
 		PreparedStatement prepStat = dbConn.prepareStatement(sql);
 		prepStat.setString(1, this.getEmail());
+		ResultSet dbRes = prepStat.executeQuery();
+		// return dbRes.next();
+		if (dbRes.next()){ 
+			System.out.println(this.getEmail() + " schon registriert, Login geklappt!");
+			return true;
+		} else { 
+			System.out.println(this.getEmail() + " noch nicht registriert, Login failed!");
+			return false;
+		}
+	}
+	// USer Exist für Admin
+	public boolean checkUExists(String mail) throws SQLException{
+		String sql = "SELECT email " + 
+				"FROM USER " +
+				"WHERE email = ?";
+		System.out.println(sql);
+		PreparedStatement prepStat = dbConn.prepareStatement(sql);
+		prepStat.setString(1, mail);
 		ResultSet dbRes = prepStat.executeQuery();
 		// return dbRes.next();
 		if (dbRes.next()){ 
@@ -168,6 +187,79 @@ public class UserBean {
 		System.out.println("User nicht gefunden");
 		return knr;
 	}
+	//Gibt Kunde mit bestimmter Email Adresse
+	public Kunde getKundeFromEmail(String kundemail) throws SQLException, ClassNotFoundException {
+
+		dbConn = new IOManager().getConnection();
+		
+		Kunde selkunde = new Kunde();
+
+		String sqlQuery = "SELECT EMAIL, KNR FROM USER WHERE EMAIL = ?";
+		PreparedStatement prepStat = dbConn.prepareStatement(sqlQuery);
+		prepStat.setString(1, kundemail);
+		ResultSet results = prepStat.executeQuery();
+		System.out.println(sqlQuery);
+		while (results.next()) {
+			String kemail = results.getString("EMAIL");
+			int knr = results.getInt("KNR");
+			if (this.email.equals(kemail.trim())) {
+				System.out.println("Du bist der als Admin angemeldet.");
+			}else{
+				String sqlUpdate = "SELECT * FROM KUNDE WHERE KNR = ?";
+				PreparedStatement prepStat2 = dbConn.prepareStatement(sqlUpdate);
+				prepStat2.setInt(1, knr);
+				ResultSet rset = prepStat2.executeQuery();
+				System.out.println(sqlUpdate);
+				while(rset.next()){
+					int nr = rset.getInt("KNR");
+					String anrede = rset.getString("ANREDE");
+					String vorname = rset.getString("VORNAME");
+					String nachname = rset.getString("NACHNAME");
+					String gdatum = rset.getString("GDATUM");
+					String telnummer = rset.getString("TELNUMMER");
+					String adresse = rset.getString("ADRESSE");
+					
+					//Kunde Values füllen
+					selkunde.setKnr(nr);
+					selkunde.setAnrede(anrede);
+					selkunde.setVorname(vorname);
+					selkunde.setNachname(nachname);
+					selkunde.setGdatum(gdatum);
+					selkunde.setTelnummer(telnummer);
+					selkunde.setAdresse(adresse);			
+				}
+			}
+		}
+		System.out.println("Kunde wurde erfolgreich selectiert");
+		return selkunde;
+	}
+		//Loesche Email from DB
+			public boolean loescheEmail(String mail) throws Exception {
+		        PreparedStatement statement = null;
+		        boolean tf = false;
+		        try {
+		            String query = "DELETE FROM USER WHERE EMAIL = ?;";
+		            Connection connection = new IOManager().getConnection();
+		            statement = connection.prepareStatement(query);
+		            statement.setString(1, mail);
+		            int r = statement.executeUpdate();
+		            /** Check if the Bill was successfully deleted. */
+		            if (r > 0) {
+		                System.out.println("EmailAccount [" + mail + "] was successfully deleted.");
+		                tf = true;
+		            } else {
+		                System.out.println("Failed to delete emailAccount: " + mail);
+		            }
+
+		        } catch (Exception e) {
+		            e.printStackTrace();
+		        } finally {
+		            if (statement != null) {
+		                statement.close();
+		            }
+		        }
+		        return tf;
+		    }
 	// Methode zum Ausloggen der Kunde
 	public boolean logoutUser() throws ClassNotFoundException, SQLException {
 		dbConn = new IOManager().getConnection();

@@ -51,6 +51,9 @@ kb = (KundenBean) session.getAttribute("kb");
 }
 %>
 
+<h1><jsp:getProperty property="infoMsg" name="msg"/></h1>
+<h2><jsp:getProperty property="actionMsg" name="msg"/></h2>
+
 <form method="post" action="./ApplGastDaten.jsp">
 <ul class="tabrow">
 			<li class=""><a href="ViewStart.jsp">HOME</a></li>
@@ -82,25 +85,25 @@ kb = (KundenBean) session.getAttribute("kb");
   		</td>
 	</tr>
 	<tr>
-		<td><input type="text" name="vorname" value="Vorname"/></td>
+		<td><input type="text" name="vorname"/></td>
 	</tr>
 	<tr>
-		<td><input type="text" name="nachname" value="Nachname"/></td>
+		<td><input type="text" name="nachname"/></td>
 	</tr>
 	<tr>
-		<td><input type="text" name="gdatum" value="11.03.1999"/></td>
+		<td><input type="text" name="gdatum"/></td>
 	</tr>
 	<tr>
-		<td><input type="text" name="telnummer" value="+49(0)17689753223"/></td>
+		<td><input type="text" name="telnummer"/></td>
 	</tr>
 	<tr>
-		<td><input type="text" name="strasse" value="mokolostr.11"/></td>
+		<td><input type="text" name="strasse"/></td>
 	</tr>
 	<tr>
-		<td><input type="text" name="plz_stadt" value="67059 Ludwigshafen"/></td>
+		<td><input type="text" name="plz_stadt"/></td>
 	</tr>
 	<tr>
-		<td><input type="submit" name="register" value="Registrieren"></input></td>
+		<td><input type="submit" name="register" value="Registrieren"/></td>
 	</tr>
 </table>
 

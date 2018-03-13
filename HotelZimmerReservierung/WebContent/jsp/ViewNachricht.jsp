@@ -81,7 +81,7 @@ wkbean = (WarenkorbBean) session.getAttribute("wkbean");
 <p>Vielen Dank für Ihre Buchung.</p>
 <p>Sie erhalten in kurze eine Bestätigung E-Mail an Ihre E-MAil Adresse.</p>
 
-<input type="submit" name="zurueckStart" value="Zurück zur Startseite"/>
+<input type="submit" name="zurueckStart" value="Zur Startseite"/>
 
 </form>
 </body>

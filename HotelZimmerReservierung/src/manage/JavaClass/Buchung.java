@@ -28,6 +28,13 @@ public class Buchung {
 	
 	public Buchung() {		
 		super();
+		this.buchungsnummer = "";
+		this.position = 0;
+		this.status = "";
+		this.bdatum = "";
+		this.ziD = "";
+		this.zeit_von = "";
+		this.zeit_bis = "";
 	}
 	public Buchung(String buchungsnummer, int position, String status, String bdatum, String ziD) {
 		super();

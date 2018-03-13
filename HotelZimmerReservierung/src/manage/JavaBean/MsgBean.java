@@ -38,6 +38,10 @@ public class MsgBean {
 		this.setInfoMsg("Logen Sie sich erstmal bitte");
 		this.setActionMsg("Erst dann ausloggen");
 	}
+	public void setNeueBuchung(){
+		this.setInfoMsg("Ihre Buchung wurde erfolgreich durcgeführt");
+		this.setActionMsg("Neue Buchung Tätigen!");
+	}
 	public void setZimmerNotAvailable(String zimmertyp){
 		this.setInfoMsg("Es gibt keine " + zimmertyp + " mehr zur Verfügung");
 		this.setActionMsg("Selektieren Sie was Anderes!");
@@ -51,18 +55,26 @@ public class MsgBean {
 		this.setActionMsg("geh jetzt zum Login");
 	}
 	public void setPersonAttribute(String personAttribut){
-		this.setInfoMsg("Bitte, " + personAttribut + " Bereich auffüllen");
+		this.setInfoMsg("Bitte, " + personAttribut + " Bereich füllen");
 		this.setActionMsg("Es darf nicht leer sein");
+	}
+	public void setBnrEinagbe(){
+		this.setInfoMsg("Wilkommen auf die Admin Seite");
+		this.setActionMsg("Bitte richtige Rechnungsnummer eingeben");
+	}
+	public void setEmailEinagbe(){
+		this.setInfoMsg("Der Kunde wurde nicht gefunden.");
+		this.setActionMsg("Geben Sie bitte die richtige Email an.");
 	}
 	public void setlogout(){
 		this.setInfoMsg("Sie haben sich ausgeloggt");
 		this.setActionMsg("bis bald");
 	}
 	public void setUhrzeitVonFehlt(){
-		this.setTimeErrorMsg("Bitte Uhrzeit im Format: dd.mm.yyyy angeben!");
+		this.setTimeErrorMsg("Bitte Uhrzeit im Format: dd.MM.yyyy angeben!");
 	}
 	public void setUhrzeitBisFehlt(){
-		this.setTimeErrorMsg("Bitte Uhrzeit im Format: dd.mm.yyyy angeben!");
+		this.setTimeErrorMsg("Bitte Uhrzeit im Format: dd.MM.yyyy angeben!");
 	}
 	
 	public String getInfoMsg() {

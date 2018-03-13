@@ -57,7 +57,8 @@ if(zurueckStart == null) zurueckStart = "";
 String logout = request.getParameter("logout");
 if(logout == null) logout = "";
 
-if(zurueckStart.equals("Zurück zur Startseite")){	
+if(zurueckStart.equals("Zur Startseite")){	
+	msg.setNeueBuchung();
 	response.sendRedirect("./ViewStart.jsp");
 }else if(logout.equals("Logout")){
 	user.setLogIn(false);

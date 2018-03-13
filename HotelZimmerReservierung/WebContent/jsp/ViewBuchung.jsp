@@ -91,7 +91,7 @@ wkbean = (WarenkorbBean) session.getAttribute("wkbean");
 
 <p>GESAMTPREIS: <%=auftragsumme + " €"%></p>
 
-<input type="submit" name="zurueck" value="Zurück">
+<input type="submit" name="zurueck" value="Auswahl Aendern">
 <input type="submit" name="verbindBuchen" value="Verbindlich buchen">
 
 </form>

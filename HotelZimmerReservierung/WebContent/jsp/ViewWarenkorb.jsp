@@ -79,20 +79,9 @@ String leer = "";
 		<li class="selected"><a href="ViewWarenkorb.jsp">ANZEIGEN</a></li>
 		<li class=""><input type="submit" name="logout" value="Logout" /></li>
 	</ul>
-<%
-out.print("TEST.............................................."+ "<br/>");
-out.print("E-Mail: " + user.getEmail() + "<br/>");
-out.print("Password: " + user.getPassword()+ "<br/>");
-out.print("TEST.............................................."+ "<br/>");
-for (Zimmer z : wkbean.getZimmerArrayList()) {
-	out.print(z.toCopyString() + "<br/>");
-}
-out.print("TEST.............................................."+ "<br/>");
-%>
 
 <h1 style="background-color: yellow; color: red;" align="center">Ihr Warenkorb beinhaltet folgende freie Zimmer:</h1>
 <h3>Ausgewählte Zimmer:</h3>
-<h4><%=leer%></h4>
 
 <%
 	ArrayList<Zimmer> wkZimmerList = new ArrayList<Zimmer>();
@@ -105,7 +94,7 @@ out.print("TEST.............................................."+ "<br/>");
 	
 	<table>
 		<tr>
-			<td><input type="submit" name=selaendern value="Zurueck/Ändern"/></td>
+			<td><input type="submit" name=selaendern value="Zurueck"/></td>
 			<td><input type="submit" name=zimmerbuchen value="Weiter"/></td>							
 		</tr>
 	</table>

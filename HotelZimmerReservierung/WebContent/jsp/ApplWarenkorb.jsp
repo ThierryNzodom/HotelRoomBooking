@@ -56,7 +56,7 @@ if(zimmerbuchen == null) zimmerbuchen = "";
 if(selaendern == null) selaendern = "";
 if(logout == null) logout = "";
 
-if(selaendern.equals("Zurueck/Ändern")){
+if(selaendern.equals("Zurueck")){
 
 	wkbean.setZimmerArrayList(listZUbuchen);
 	

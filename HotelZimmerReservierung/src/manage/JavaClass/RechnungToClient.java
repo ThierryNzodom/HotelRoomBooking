@@ -32,6 +32,7 @@ public class RechnungToClient {
 	String ort = "67059 LUdwigshafen";
 	
 	String rechnungnummer;
+	String buchungsnummer;
 	
 	//Kundendaten
 	String kundenname;
@@ -43,9 +44,10 @@ public class RechnungToClient {
 		super();
 	}
 	
-	public RechnungToClient(String rechnungsnummer, String kundenname, ArrayList<Zimmer> ziList, Double gesamtpreis, String k_adresse, String k_ort, int anzahlNacht) {
+	public RechnungToClient(String rechnungsnummer, String buchungsnummer, String kundenname, ArrayList<Zimmer> ziList, Double gesamtpreis, String k_adresse, String k_ort, int anzahlNacht) {
 		super();
 		this.rechnungnummer = rechnungsnummer;
+		this.buchungsnummer = buchungsnummer;
 		this.kundenname = kundenname;
 		this.ziList = ziList;
 		this.gesamtpreis = gesamtpreis;
@@ -85,6 +87,8 @@ public class RechnungToClient {
 	document.add(new Phrase("RechnungsNr. ", head2));
 	document.add(new Phrase(rechnungnummer, normalText));
 	document.add(new Paragraph("\n"));
+	document.add(new Phrase("BuchungsNr. ", head2));
+	document.add(new Phrase(buchungsnummer, normalText));
 	document.add(new Paragraph("\n"));
 	document.add(new Paragraph("\n"));
 	document.add(new Phrase("Kunde: ", head2));

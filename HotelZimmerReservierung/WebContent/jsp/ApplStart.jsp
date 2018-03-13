@@ -55,6 +55,8 @@ String registrieren = request.getParameter("registrieren");
 if(registrieren == null) registrieren = "null";
 String zurBuchung = request.getParameter("zurBuchung");
 if(zurBuchung == null) zurBuchung = "null";
+String admin = request.getParameter("admin");
+if(admin == null) admin = "";
 String logout = request.getParameter("logout");
 if(logout == null) logout = "";
 
@@ -68,10 +70,18 @@ if(registrieren.equals("Registrieren")){
 	response.sendRedirect("./ViewGastDaten.jsp?comeFrom=ApplStart");
 	
 } else if(zumlogin.equals("Zum Login")){
+	if(user.isLogIn()){
+		msg.setInfoMsg("Hallo!");
+		msg.setActionMsg("Sie Sind schon Angemeldet!");
+		response.sendRedirect("./ViewStart.jsp");
+	}else
 	if(email == "" || password == "") {
 		msg.setActionMsg("Fügen Sie bitte zuersmal ein Email oder Password ein!");
 		response.sendRedirect("./ViewStart.jsp");
-	} else {
+	} else if(email.equals("lazozure@gmail.com") && password.equals("heritage")){
+		msg.setActionMsg("Bitte Auf Admin Login gehen!");
+		response.sendRedirect("./ViewStart.jsp");
+	}else{
 	user.setEmail(email);
 	user.setPassword(password);
 	try{
@@ -100,7 +110,44 @@ if(registrieren.equals("Registrieren")){
 	}
 }
 
-} else if(logout.equals("Logout")){
+}else if(admin.equals("Admin Login")){
+	if(user.isLogIn()){
+		msg.setInfoMsg("Hallo!");
+		msg.setActionMsg("Sie Sind schon Angemeldet!");
+		response.sendRedirect("./ViewStart.jsp");
+	}else
+	if(email == "" || password == "") {
+		msg.setActionMsg("Fügen Sie bitte die Admin Daten!");
+		response.sendRedirect("./ViewStart.jsp");
+		
+	} else if(email.equals("lazozure@gmail.com") && password.equals("heritage")){
+		user.setEmail(email);
+		user.setPassword(password);
+	try{
+		boolean rc = user.checkEmailPassword();
+		if (rc) {//email/pw passt
+			user.setLogIn(true);
+			response.sendRedirect("./ViewAdminFunktion.jsp");
+		
+		}else{//email/pw passt nicht
+			user.setLogIn(false);
+			msg.setLoginFailed();
+			response.sendRedirect("./ViewStart.jsp");
+		
+		}
+	}catch(Exception e){
+		e.printStackTrace();
+		msg.setSystemfehler();
+		response.sendRedirect("./ViewStart.jsp");
+	}
+		
+	} else {
+		msg.setActionMsg("Korrigieren Sie bitte die Admin Anmeldedaten");
+		response.sendRedirect("./ViewStart.jsp");
+		
+}
+	
+}else if(logout.equals("Logout")){
 	if(!user.isLogIn()){
 		msg.setLogin();
 		response.sendRedirect("./ViewStart.jsp");

@@ -10,10 +10,18 @@ public class Kunde {
 	String telnummer;
 	String email;
 	String adresse;
+	Double auftragsumme;
 	
 	
 	public Kunde() {
 		super();
+//		this.knr = "";
+		this.anrede = "";
+		this.vorname = "";
+		this.nachname = "";
+		this.gdatum = "";
+		this.telnummer = "";
+		this.adresse = "";
 	}
 	public Kunde(int knr, String anrede, String vorname, String nachname, String gdatum, String telnummer, String adresse) {
 		super();
@@ -72,6 +80,12 @@ public class Kunde {
 	}
 	public void setAdresse(String adresse) {
 		this.adresse = adresse;
+	}
+	public Double getAuftragsumme() {
+		return auftragsumme;
+	}
+	public void setAuftragsumme(Double auftragsumme) {
+		this.auftragsumme = auftragsumme;
 	}
 	@Override
 	public String toString() {

@@ -42,7 +42,7 @@ if(kb == null){
 
 Kunde kunde = new Kunde();
 
-String anrede= request.getParameter("anrede");
+String anrede = request.getParameter("anrede");
 String vorname = request.getParameter("vorname");
 String nachname = request.getParameter("nachname");
 String gdatum = request.getParameter("gdatum");
@@ -66,24 +66,30 @@ if(register.equals("Registrieren")){
 	kunde.setTelnummer(telnummer);
 	kunde.setAdresse(strasse + ", " + plz_stadt);
 	//Kunde VAriable in KundenBean speichern
-	if(kunde.getVorname() == ""){
+	if(email.equals("")){
+		msg.setPersonAttribute("email");
+		response.sendRedirect("./ViewGastDaten.jsp");
+	}else if(password.equals("")){
+		msg.setPersonAttribute("password");
+		response.sendRedirect("./ViewGastDaten.jsp");
+	}else if(kunde.getVorname() == ""){
 		msg.setPersonAttribute("vorname");
-		response.sendRedirect("./ViewStart.jsp");
+		response.sendRedirect("./ViewGastDaten.jsp");
 	}else if(kunde.getNachname() == ""){
 		msg.setPersonAttribute("nachname");
-		response.sendRedirect("./ViewStart.jsp");
+		response.sendRedirect("./ViewGastDaten.jsp");
 	}else if(kunde.getGdatum() == ""){
 		msg.setPersonAttribute("gdatum");
-		response.sendRedirect("./ViewStart.jsp");
+		response.sendRedirect("./ViewGastDaten.jsp");
 	}else if(kunde.getTelnummer() == ""){
 		msg.setPersonAttribute("telnummer");
-		response.sendRedirect("./ViewStart.jsp");
+		response.sendRedirect("./ViewGastDaten.jsp");
 	}else if(strasse == ""){
 		msg.setPersonAttribute("strasse");
-		response.sendRedirect("./ViewStart.jsp");
+		response.sendRedirect("./ViewGastDaten.jsp");
 	}else if(plz_stadt == ""){
 		msg.setPersonAttribute("PLZ_Stadt");
-		response.sendRedirect("./ViewStart.jsp");
+		response.sendRedirect("./ViewGastDaten.jsp");
 	}else {
 		kb.setKunde(kunde);
 		if(kb.insertKundeIfNotExists()){

@@ -49,6 +49,33 @@ public class Rechnung {
 			teilRechnungsnummer = "RCH" + combinedLetters;
 			return teilRechnungsnummer;
 		}
+		//Delete Rechnung from DB
+		public boolean stornierung() throws Exception {
+	        PreparedStatement statement = null;
+	        boolean tf = false;
+	        try {
+	            String query = "DELETE FROM RECHNUNG WHERE RID = ?;";
+	            Connection connection = new IOManager().getConnection();
+	            statement = connection.prepareStatement(query);
+	            statement.setString(1, rechnungsnummer);
+	            int r = statement.executeUpdate();
+	            /** Check if the Bill was successfully deleted. */
+	            if (r > 0) {
+	                System.out.println("Rechnung [" + rechnungsnummer + "] was successfully deleted.");
+	                tf = true;
+	            } else {
+	                System.out.println("Failed to delete Bill " + rechnungsnummer);
+	            }
+
+	        } catch (Exception e) {
+	            e.printStackTrace();
+	        } finally {
+	            if (statement != null) {
+	                statement.close();
+	            }
+	        }
+	        return tf;
+	    }
 	// Neue Buchung einfügen
 	public void insertRechnung() throws SQLException, ClassNotFoundException{
 		Connection dbConn = new IOManager().getConnection();

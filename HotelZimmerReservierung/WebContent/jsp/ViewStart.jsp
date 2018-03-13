@@ -93,6 +93,7 @@ String datumBis = dfb.format(futureday);
 		</tr>				
 		<tr>		
 			<td><input type="submit" name="zumlogin" value="Zum Login"/></td>
+			<td><input type="submit" name="admin" value="Admin Login" /></td>
 			<td><input type="submit" name="registrieren" value="Registrieren"/></td>
 		</tr>
 	</table>

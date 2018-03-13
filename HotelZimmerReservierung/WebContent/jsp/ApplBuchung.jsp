@@ -71,10 +71,11 @@ if(verbindBuchen == null) verbindBuchen = "";
 String logout = request.getParameter("logout");
 if(logout == null) logout = "";
 
-if(zurueck.equals("Zurück")){
-	
-	
-	response.sendRedirect("./ViewWarenkorb.jsp");
+if(zurueck.equals("Auswahl Aendern")){
+	ArrayList<Zimmer> zimmerArrayList = new ArrayList<Zimmer>();
+	wkbean.setZimmerArrayList(zimmerArrayList);
+	response.sendRedirect("./ViewBelegung.jsp");
+
 } else if (verbindBuchen.equals("Verbindlich buchen")){
 	
 	 //Update AuftragSumme der Kunde.
@@ -135,8 +136,9 @@ if(zurueck.equals("Zurück")){
 	String[] k_adr = kb.getKunde().getAdresse().split(",");
 	String k_adresse = k_adr[0];
 	String k_ort = k_adr[1];
+	String bchnr = buchung.getBuchungsnummer();
 	int anzahlNacht = bb.getBuchung().anzahlUebernachtung(buchung.getZeit_von(), buchung.getZeit_bis());
-	RechnungToClient rechnungToClient = new RechnungToClient(rechnungsnummer, kundeName, wkZimmerList, gesamtpreis, k_adresse, k_ort, anzahlNacht);
+	RechnungToClient rechnungToClient = new RechnungToClient(rechnungsnummer, bchnr, kundeName, wkZimmerList, gesamtpreis, k_adresse, k_ort, anzahlNacht);
 	
 	
 	//Email Senden (Attachement: Rechnung.pdf)
@@ -152,7 +154,11 @@ if(zurueck.equals("Zurück")){
 				+ "greatforother@gmail.com";
 	SendEmailBean sendEmailBean = new SendEmailBean(toEmail, emailSubject, emailBody, rechnungsnummer);		
 	
-	response.sendRedirect("./ViewNachricht.jsp");	
+	//Reset Buchungsbean und WarenkorbBean
+	BuchungBean bcb = new BuchungBean();
+	WarenkorbBean wkb = new WarenkorbBean();
+	response.sendRedirect("./ViewNachricht.jsp");
+	
 }else if(logout.equals("Logout")){
 	user.setLogIn(false);
 	user.logoutUser();
